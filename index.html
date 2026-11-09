@@ -1,0 +1,1774 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="One Munch Plan">
+<meta name="theme-color" content="#FFF8EC">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="description" content="Plan meals around what's already in your kitchen.">
+<title>One Munch Plan · Meal planning to the max!</title>
+<style>
+@font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque-800.woff2") format("woff2");font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:"DM Sans";src:url("fonts/dm-sans-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"DM Sans";src:url("fonts/dm-sans-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"DM Sans";src:url("fonts/dm-sans-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Space Mono";src:url("fonts/space-mono-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Space Mono";src:url("fonts/space-mono-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+/* ---------- Design tokens (Pastel Neobrutalism) ---------- */
+:root{
+  --ink:#1A1A1A;--paper:#FFF8EC;--white:#FFFFFF;
+  --mint:#B8F2D0;--butter:#FFE98A;--lavender:#CDB8FF;--sky:#A8DCFF;--peach:#FFC4A8;--pink:#FFB3C7;--stone:#D9D6E0;
+  --border:2px solid var(--ink);
+  --shadow:4px 4px 0 var(--ink);
+  --shadow-sm:2px 2px 0 var(--ink);
+  --radius:14px;--radius-sm:8px;--radius-pill:999px;
+  --tap-min:44px;
+  --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --display:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;
+  --mono:"Space Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+
+/* ---------- Base (mobile first) ---------- */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--paper);background-image:url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='70' height='70' patternTransform='scale(5) rotate(60)'><rect x='0' y='0' width='100%' height='100%' fill='%23fff8ecff'/><path d='M-4.8 4.44L4 16.59 16.14 7.8M32 30.54l-13.23 7.07 7.06 13.23M-9 38.04l-3.81 14.5 14.5 3.81M65.22 4.44L74 16.59 86.15 7.8M61 38.04l-3.81 14.5 14.5 3.81'  stroke-linejoin='round' stroke-linecap='round' stroke-width='3' stroke='%23ffe98a80' fill='none'/><path d='M59.71 62.88v3h3M4.84 25.54L2.87 27.8l2.26 1.97m7.65 16.4l-2.21-2.03-2.03 2.21m29.26 7.13l.56 2.95 2.95-.55'  stroke-linejoin='round' stroke-linecap='round' stroke-width='3' stroke='%23ffb3c780' fill='none'/><path d='M58.98 27.57l-2.35-10.74-10.75 2.36M31.98-4.87l2.74 10.65 10.65-2.73M31.98 65.13l2.74 10.66 10.65-2.74'  stroke-linejoin='round' stroke-linecap='round' stroke-width='3' stroke='%23b8f2d080' fill='none'/><path d='M8.42 62.57l6.4 2.82 2.82-6.41m33.13-15.24l-4.86-5.03-5.03 4.86m-14-19.64l4.84-5.06-5.06-4.84'  stroke-linejoin='round' stroke-linecap='round' stroke-width='3' stroke='%23cdb8ff80' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");color:var(--ink);font:400 16px/22px var(--sans);-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+#app{position:relative;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--paper);background-image:url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='70' height='70' patternTransform='scale(5) rotate(60)'><rect x='0' y='0' width='100%' height='100%' fill='%23fff8ecff'/><path d='M-4.8 4.44L4 16.59 16.14 7.8M32 30.54l-13.23 7.07 7.06 13.23M-9 38.04l-3.81 14.5 14.5 3.81M65.22 4.44L74 16.59 86.15 7.8M61 38.04l-3.81 14.5 14.5 3.81'  stroke-linejoin='round' stroke-linecap='round' stroke-width='3' stroke='%23ffe98a80' fill='none'/><path d='M59.71 62.88v3h3M4.84 25.54L2.87 27.8l2.26 1.97m7.65 16.4l-2.21-2.03-2.03 2.21m29.26 7.13l.56 2.95 2.95-.55'  stroke-linejoin='round' stroke-linecap='round' stroke-width='3' stroke='%23ffb3c780' fill='none'/><path d='M58.98 27.57l-2.35-10.74-10.75 2.36M31.98-4.87l2.74 10.65 10.65-2.73M31.98 65.13l2.74 10.66 10.65-2.74'  stroke-linejoin='round' stroke-linecap='round' stroke-width='3' stroke='%23b8f2d080' fill='none'/><path d='M8.42 62.57l6.4 2.82 2.82-6.41m33.13-15.24l-4.86-5.03-5.03 4.86m-14-19.64l4.84-5.06-5.06-4.84'  stroke-linejoin='round' stroke-linecap='round' stroke-width='3' stroke='%23cdb8ff80' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");overflow:hidden}
+#screen{flex:1;overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px 24px;-webkit-overflow-scrolling:touch}
+.page{max-width:1120px;margin:0 auto}
+h1{font:800 32px/36px var(--display);margin:0 0 4px}
+h2{font:700 20px/26px var(--display);margin:0 0 12px}
+h3{font:700 20px/26px var(--display);margin:24px 0 10px}
+h4{font:700 18px/24px var(--display);margin:0}
+p{margin:0}
+.muted{font:400 14px/20px var(--sans);color:#4A4A4A}
+.mono{font:700 14px/20px var(--mono)}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--tap-min);padding:10px 18px;border:var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);background:var(--white);color:var(--ink);font:700 16px/20px var(--sans);cursor:pointer;transition:transform 80ms ease,box-shadow 80ms ease;white-space:nowrap}
+.btn:active{transform:translate(2px,2px);box-shadow:none}
+.btn:disabled{background:var(--stone);box-shadow:none;opacity:.6;cursor:not-allowed;transform:none}
+.btn--primary{background:var(--sky)}
+.btn--success{background:var(--mint)}
+.btn--danger{background:var(--pink)}
+.btn--block{width:100%}
+.icon-btn{display:grid;place-items:center;width:44px;height:44px;flex-shrink:0;border:var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);background:var(--white);cursor:pointer;padding:0;transition:transform 80ms ease,box-shadow 80ms ease}
+.icon-btn:active{transform:translate(2px,2px);box-shadow:none}
+.icon-btn--danger{background:var(--pink)}
+.icon-btn--on{background:var(--mint)}
+.icon-btn:disabled{background:var(--stone);box-shadow:none;opacity:.6;cursor:not-allowed;transform:none}
+.meal-heading-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 8px}
+.meal-heading-row h3{margin:0}
+.meal-view-toggle{display:flex;gap:8px}
+.meal-view-toggle .icon-btn{width:40px;height:40px}
+.meal-view-toggle .ic{width:20px;height:20px}
+.stack{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+
+.ob-steps{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px}
+.ob-steps li{display:flex;gap:12px;align-items:flex-start;font:400 15px/21px var(--sans)}
+.ob-num{flex-shrink:0;width:28px;height:28px;border:2px solid var(--ink);border-radius:50%;background:var(--white);display:grid;place-items:center;font:700 14px/1 var(--sans)}
+
+.plan-actions{gap:16px}
+.plan-gen-head{display:none}
+@media (min-width:768px){.plan-gen-head{display:inline-flex}.plan-gen-foot{display:none}}
+
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.page.enter>*{animation:rise .5s cubic-bezier(.2,.8,.2,1) backwards}
+.page.enter>*:nth-child(2){animation-delay:.08s}
+.page.enter>*:nth-child(3){animation-delay:.16s}
+.page.enter>*:nth-child(4){animation-delay:.24s}
+.page.enter>*:nth-child(n+5){animation-delay:.32s}
+@media (prefers-reduced-motion: reduce){.page.enter>*{animation:none}}
+
+.photo-tile{width:100%}
+.recipe-tile{width:100%}
+@media (min-width:768px) and (max-width:1024px){.recipe-tile{width:33.333%}}
+@media (min-width:1025px){.recipe-tile{width:25%}}
+.item-tile{width:50%}
+
+/* ---------- Icons ---------- */
+.ic{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+/* ---------- Image placeholders ---------- */
+.img{width:72px;height:72px;flex-shrink:0;border:var(--border);border-radius:var(--radius-sm);display:grid;place-items:center;overflow:hidden}
+.img .ic{width:26px;height:26px}
+.img--wide{width:100%;height:auto;aspect-ratio:4/3;border-radius:var(--radius-sm)}
+.img--wide .ic{width:36px;height:36px}
+.img--lg{width:100%;height:auto;aspect-ratio:4/3;border-radius:var(--radius);box-shadow:var(--shadow)}
+.img--lg .ic{width:48px;height:48px}
+
+/* ---------- Cards ---------- */
+.card{background:var(--white);border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:16px;position:relative;overflow:hidden}
+.card--tap{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;cursor:pointer;color:var(--ink);font:inherit;transition:transform 80ms ease,box-shadow 80ms ease}
+.card--tap:active{transform:translate(2px,2px);box-shadow:none}
+.card--sel{background:var(--sky)}
+.card-body{flex:1;min-width:0}
+.meta{font:400 14px/20px var(--sans);color:#4A4A4A;margin-top:2px}
+.missing{font:400 14px/20px var(--sans);margin-top:8px}
+.missing b{font-weight:700}
+
+/* ---------- Status ---------- */
+.pill{display:inline-flex;align-items:center;height:28px;padding:0 12px;border:var(--border);border-radius:var(--radius-pill);font:700 13px/16px var(--sans);color:var(--ink);background:var(--white);white-space:nowrap}
+.pill--planned{background:var(--butter)}
+.pill--cooked{background:var(--mint)}
+.pill--skipped{background:var(--stone)}
+.pill--eat{background:var(--lavender)}
+.slot-label{font:700 13px/16px var(--sans);color:#4A4A4A}
+.stars-inline{font:700 18px/24px var(--mono);margin-left:8px}
+.slot{--stripe:var(--butter);background:var(--white);border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 14px 14px 22px;margin-bottom:16px;position:relative;overflow:hidden}
+.slot::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:var(--stripe);border-right:var(--border)}
+.slot--planned{--stripe:var(--butter)}
+.slot--cooked{--stripe:var(--mint)}
+.slot--skipped{--stripe:var(--stone)}
+.slot--eat{--stripe:var(--lavender)}
+.slot-top{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:none;border:0;padding:0;cursor:pointer;color:var(--ink)}
+.slot-row{display:flex;align-items:center;gap:8px}
+.slot-row .slot-top{flex:1;min-width:0}
+.cell-row{display:flex;align-items:center;gap:8px}
+.cell-row .cell-main{flex:1;min-width:0}
+.empty-card{display:flex;align-items:center;gap:12px;width:100%;min-height:72px;padding:14px 16px;border:var(--border);border-radius:var(--radius);background:var(--white);box-shadow:var(--shadow-sm);margin-bottom:16px;font:700 16px/20px var(--sans);text-align:left;cursor:pointer;transition:transform 80ms ease,box-shadow 80ms ease}
+.empty-card:active{transform:translate(2px,2px);box-shadow:none}
+
+/* ---------- Chips and filters ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip-scroll{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;margin-bottom:4px;-webkit-overflow-scrolling:touch}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap-min);padding:0 14px;border:var(--border);border-radius:var(--radius-pill);box-shadow:var(--shadow-sm);background:var(--white);font:700 14px/16px var(--sans);color:var(--ink);cursor:pointer;flex-shrink:0;transition:transform 80ms ease,box-shadow 80ms ease}
+.chip:active{transform:translate(2px,2px);box-shadow:none}
+.chip--purchased{background:var(--mint)}
+.chip--purchased .ic{width:18px;height:18px}
+.chip--pop{animation:chipBuy .28s cubic-bezier(.2,.8,.2,1)}
+.chip--pop .ic{animation:pop .18s ease-out}
+.chip--undo{animation:chipUndo .24s ease-out}
+@keyframes chipBuy{0%{transform:scale(.9);background-color:var(--white)}60%{transform:scale(1.05)}100%{transform:scale(1);background-color:var(--mint)}}
+@keyframes chipUndo{from{transform:scale(.96);background-color:var(--mint)}to{transform:scale(1);background-color:var(--white)}}
+@media (prefers-reduced-motion: reduce){.chip--pop,.chip--pop .ic,.chip--undo{animation:none}}
+.chip--on{background:var(--ink);color:#fff}
+.chip--on.chip--effort{background:var(--lavender);color:var(--ink)}
+.chip .mono{font-size:13px}
+@keyframes pop{from{transform:scale(.6)}to{transform:scale(1)}}
+
+/* ---------- Segmented control ---------- */
+.seg{display:flex;gap:4px;background:var(--white);border:var(--border);border-radius:var(--radius-pill);padding:4px;margin-bottom:12px}
+.seg button{flex:1;min-height:40px;padding:0 8px;border:0;border-radius:var(--radius-pill);background:transparent;font:700 14px/16px var(--sans);color:var(--ink);cursor:pointer;white-space:nowrap}
+.seg button.on{background:var(--sky);box-shadow:inset 0 0 0 2px var(--ink),2px 2px 0 var(--ink)}
+
+/* ---------- Week strip (phone) ---------- */
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:16px}
+.day{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;padding:4px 0;border:var(--border);border-radius:var(--radius-sm);background:var(--white);box-shadow:var(--shadow-sm);font:700 12px/14px var(--sans);cursor:pointer;transition:transform 80ms ease,box-shadow 80ms ease}
+.day b{font:800 18px/20px var(--display)}
+.day:active{transform:translate(2px,2px);box-shadow:none}
+.day.on{background:var(--sky)}
+
+/* ---------- Inputs ---------- */
+input[type=text],input[type=date],select{width:100%;min-height:48px;padding:12px 14px;border:var(--border);border-radius:var(--radius-sm);background:var(--white);color:var(--ink);font:400 16px/22px var(--sans)}
+input[type=text]:focus,input[type=date]:focus,select:focus{outline:none;box-shadow:4px 4px 0 var(--sky)}
+input[type=checkbox]{width:22px;height:22px;min-height:0;margin:0;accent-color:var(--ink);flex-shrink:0}
+.lbl{display:block;font:700 20px/26px var(--display);margin:12px 0 6px}
+.meal-status-label{font:700 20px/26px var(--display)}
+.search-wrap{position:relative;margin-bottom:14px}
+.search-wrap .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;pointer-events:none}
+.search-wrap input{padding-left:38px;margin:0}
+input[type=date]{position:relative;-webkit-appearance:none;appearance:none;padding-right:48px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A1A1A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:22px 22px;cursor:pointer}
+input[type=date]::-webkit-calendar-picker-indicator{opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
+.search-wrap input{padding-right:48px}
+.search-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;display:grid;place-items:center;border:0;background:transparent;padding:0;cursor:pointer;color:var(--ink)}
+.search-clear .ic{width:18px;height:18px}
+.btn-label{display:inline}
+@media (max-width:767px){.btn-label{display:none}}
+.sort-select{width:auto;min-width:118px;min-height:48px;-webkit-appearance:none;appearance:none;padding:12px 44px 12px 14px;background-color:var(--white);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A1A1A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 18px center;background-size:18px 18px;cursor:pointer}
+.shop-search{position:relative;z-index:1;margin-bottom:20px}
+.shop-entry{display:flex;gap:8px}
+.shop-entry .search-wrap{flex:1;min-width:0;margin:0}
+.shop-entry input{flex:1;min-width:0}
+.ingredient-suggestions{position:absolute;top:calc(100% + 8px);left:0;right:0;display:grid;max-height:min(60vh,400px);overflow-y:auto;border:var(--border);border-radius:var(--radius-sm);background:var(--white);box-shadow:var(--shadow-sm)}
+.ingredient-suggestion{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:8px 12px;border:0;border-bottom:1px solid var(--ink);background:var(--white);text-align:left;font:500 15px/20px var(--sans);cursor:pointer}
+.ingredient-suggestion:last-child{border-bottom:0}
+.ingredient-suggestion:focus-visible{outline:3px solid var(--sky);outline-offset:-3px}
+.ingredient-suggestion-category{font:400 12px/16px var(--sans);color:#4A4A4A}
+.ingredient-suggestion-note{padding:10px 12px;font:400 14px/20px var(--sans);color:#4A4A4A}
+.meal-list-option{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;margin-bottom:16px;padding:12px 14px;border:var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);background:var(--white);text-align:left;cursor:pointer}
+.meal-list-option.card--sel{background:var(--sky)}
+.select-wrap{position:relative;width:auto}
+.select-wrap select{appearance:none;-webkit-appearance:none;min-height:40px;padding:6px 36px 6px 12px;font:700 14px/18px var(--sans);width:auto;min-width:150px;border-radius:var(--radius-pill)}
+.select-wrap .ic{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:18px;height:18px;pointer-events:none}
+
+/* ---------- Lists and rows ---------- */
+.list{background:var(--white);border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:16px}
+.checkrow{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 14px;border-bottom:var(--border)}
+.checkrow:last-child{border-bottom:0}
+.checkrow .grow{flex:1;min-width:0;font:500 16px/22px var(--sans)}
+.checkrow--line .grow{text-decoration:line-through;color:#6B6B6B}
+.row-item{display:flex;align-items:center;gap:12px;background:var(--white);border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:10px 10px 10px 12px;margin-bottom:12px}
+.row-item .grow{flex:1;min-width:0;background:none;border:0;padding:0;text-align:left;cursor:pointer;color:var(--ink)}
+.row-item .name{font:700 18px/24px var(--display)}
+.row-actions{display:flex;gap:8px}
+.addrow{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:10px 14px;background:var(--white);border:var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);font:700 15px/20px var(--sans);text-align:left;cursor:pointer;margin-bottom:12px;transition:transform 80ms ease,box-shadow 80ms ease}
+.addrow:active{transform:translate(2px,2px);box-shadow:none}
+.addrow .muted{margin-left:auto}
+.notice{background:var(--butter);border:var(--border);border-radius:var(--radius-sm);padding:10px 12px;font:400 14px/20px var(--sans);margin-bottom:14px}
+.section-tag{font:700 13px/16px var(--mono);color:#4A4A4A;margin-left:8px}
+
+/* ---------- Empty states ---------- */
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 16px 8px}
+.blob{width:96px;height:96px;margin-bottom:14px;border:var(--border);border-radius:50% 46% 54% 48%;background:var(--butter);box-shadow:var(--shadow-sm);display:grid;place-items:center}
+.blob--sky{background:var(--sky);border-radius:46% 54% 50% 50%}
+.blob--lav{background:var(--lavender);border-radius:55% 45% 48% 52%}
+.blob .ic{width:36px;height:36px}
+.empty p{font:400 16px/22px var(--sans);max-width:260px}
+
+/* ---------- Steps and stars ---------- */
+.step{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
+.step-num{display:inline-grid;place-items:center;width:32px;height:32px;flex-shrink:0;border:var(--border);border-radius:50%;background:var(--lavender);font:700 14px/1 var(--mono)}
+.step p{font:400 16px/22px var(--sans);padding-top:4px}
+.stars{display:flex;gap:4px;margin:4px 0 8px;flex-wrap:wrap}
+.stars button{width:44px;height:44px;padding:0;border:0;background:none;display:grid;place-items:center;cursor:pointer}
+.stars .ic{width:40px;height:40px;fill:var(--white);stroke:var(--ink);stroke-width:2}
+.stars button.on .ic{fill:var(--peach)}
+.rating-text{font:700 14px/20px var(--mono)}
+
+/* ---------- Navigation: bottom tab bar (phone and tablet) ---------- */
+.tabs{order:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));height:calc(72px + env(safe-area-inset-bottom,0px));padding:6px 4px env(safe-area-inset-bottom,0px);background:var(--white);border-top:var(--border);flex-shrink:0}
+.tabs::before{content:none}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:44px;padding:0 4px;border:0;background:none;font:500 13px/16px var(--sans);color:var(--ink);cursor:pointer}
+.tab-pill{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 12px;border-radius:var(--radius-pill);border:2px solid transparent}
+.tab.on .tab-pill{background:var(--butter);border-color:var(--ink);box-shadow:var(--shadow-sm)}
+.tab[data-id="home"].on .tab-pill{background:var(--butter)}
+.tab[data-id="pantry"].on .tab-pill{background:var(--sky)}
+.tab[data-id="plan"].on .tab-pill{background:var(--pink)}
+.tab[data-id="shop"].on .tab-pill{background:var(--mint)}
+.tab[data-id="recipes"].on .tab-pill{background:var(--lavender)}
+.tab.on{font-weight:700}
+.tab:focus-visible,.btn:focus-visible,.icon-btn:focus-visible,.chip:focus-visible,.day:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+
+/* ---------- Sheets and modals ---------- */
+#overlay{position:absolute;inset:0;background:rgba(26,26,26,.35);display:flex;align-items:flex-end;justify-content:center;z-index:10;animation:overlayIn 260ms ease-out}
+#overlay.center{align-items:center;padding:16px}
+#overlay[hidden]{display:none}
+#sheet{position:relative;background:var(--white);width:100%;border-top:var(--border);border-radius:14px 14px 0 0;padding:12px 16px calc(18px + env(safe-area-inset-bottom,0px));max-height:88%;overflow-y:auto;animation:sheetUp 380ms cubic-bezier(.2,.8,.2,1)}
+#overlay.center #sheet{border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow);max-width:400px;width:100%;padding:20px 18px 18px;animation:none}
+#overlay.center .grip{display:none}
+.grip{width:40px;height:5px;border-radius:var(--radius-pill);background:var(--ink);margin:0 auto 14px}
+#sheet h2{padding-right:44px;font:700 26px/32px var(--display);margin:0 0 16px}
+#sheet h3{margin:24px 0 16px}
+.rform h3,.rform .lbl{margin:24px 0 16px}
+#sheet .lbl{margin:24px 0 16px}
+.sheet-x{position:absolute;top:12px;right:12px;z-index:2}
+#tour{position:absolute;inset:0;z-index:40;pointer-events:none}
+.tour-scrim{position:absolute;inset:0;background:rgba(26,26,26,.55);pointer-events:auto}
+.tour-spot{position:absolute;border:var(--border);border-radius:var(--radius);box-shadow:0 0 0 9999px rgba(26,26,26,.55);pointer-events:none}
+.tour-center{position:absolute;top:0;bottom:0;right:0;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none}
+.tour-card{width:100%;max-width:768px;pointer-events:auto;background:var(--white);border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.tour-actions{display:flex;gap:10px;margin-top:16px}
+.tour-actions .btn{flex:1}
+#app > .scroll-cue{position:absolute;right:16px;z-index:9;width:44px;height:44px;border-radius:50%;border:var(--border);background:var(--white);box-shadow:var(--shadow);display:grid;place-items:center;cursor:pointer;padding:0}
+#app > .scroll-cue[hidden]{display:none}
+#app > .scroll-cue .ic{width:22px;height:22px}
+.app-foot{margin-top:32px;text-align:center;font:500 12px/16px var(--mono);color:var(--ink);opacity:.6;padding-bottom:8px}
+@keyframes sheetUp{from{transform:translateY(64px);opacity:0}to{transform:none;opacity:1}}
+@keyframes overlayIn{from{background:rgba(26,26,26,0)}to{background:rgba(26,26,26,.35)}}
+@media (prefers-reduced-motion: reduce){#overlay,#sheet,#overlay.center #sheet{animation:none !important;transition:none !important}}
+
+/* ---------- Toast ---------- */
+.toast{position:absolute;left:16px;right:16px;bottom:calc(72px + env(safe-area-inset-bottom,0px) + 12px);background:var(--mint);border:var(--border);border-radius:var(--radius-pill);box-shadow:var(--shadow-sm);padding:10px 16px;font:700 14px/20px var(--sans);text-align:center;z-index:20;animation:sheetUp 380ms cubic-bezier(.2,.8,.2,1)}
+.toast--err{background:var(--pink)}
+.toast[hidden]{display:none}
+
+/* ---------- Grids (tablet and desktop; single column by default) ---------- */
+.recipe-grid,.storage-grid,.shop-grid{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+.storage-grid .row-item,.shop-grid .shop-sec{margin-bottom:0}
+.shop-sec{background:var(--white);border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:16px}
+.shop-sec h3{margin:0 0 12px;font-size:18px;line-height:24px}
+.shop-sec .chips{margin-bottom:0}
+.history-list{max-width:760px}
+.storage-grid .empty{grid-column:1/-1}
+.detail-primary,.detail-side{min-width:0}
+.detail-grid{display:flex;flex-direction:column}
+.detail-primary{display:contents}
+.detail-side{margin-top:24px}
+.detail-actions{position:static;order:1;background:none;padding:0}
+
+/* ---------- Plan table (desktop) ---------- */
+.table-wrap{overflow-x:auto;border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow);background:var(--white);margin-bottom:16px}
+.plan-table{width:100%;min-width:720px;table-layout:fixed;border-collapse:separate;border-spacing:0}
+.plan-table th,.plan-table td{border-bottom:var(--border);border-right:var(--border);vertical-align:top;padding:12px;text-align:left}
+.plan-table thead th{background:var(--paper);font:700 18px/24px var(--display)}
+.plan-table tr:last-child th,.plan-table tr:last-child td{border-bottom:0}
+.plan-table th:last-child,.plan-table td:last-child{border-right:0}
+.plan-table th:first-child,.plan-table td:first-child{width:72px}
+.plan-table tbody th{background:var(--white)}
+.plan-table tr.is-selected th{background:var(--butter)}
+.day-btn{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;min-height:44px;padding:4px 2px;border:0;background:none;font:700 14px/18px var(--sans);text-align:left;cursor:pointer}
+.day-btn b{font:800 22px/24px var(--display)}
+.cell{position:relative;min-height:120px;padding:4px 0 0 0;display:flex;flex-direction:column}
+.cell--filled{padding-left:14px;box-shadow:inset 8px 0 0 var(--stripe)}
+.cell-main{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;background:none;border:0;padding:0;cursor:pointer;color:var(--ink)}
+.cell-title{font:700 16px/22px var(--display)}
+.cell-meta{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.cell .slot-controls{justify-content:flex-start;margin-top:auto;padding-top:10px}
+.empty-cell{display:flex;align-items:center;gap:8px;width:100%;min-height:72px;padding:10px;border:2px dashed var(--ink);border-radius:var(--radius-sm);background:none;font:700 14px/18px var(--sans);cursor:pointer;color:var(--ink)}
+.empty-cell:hover{background:var(--paper)}
+.plan-only-desktop{display:none}
+
+/* ============================================================
+   Tablet: 768px and up
+   ============================================================ */
+@media (min-width:768px){
+  h1{font-size:40px;line-height:44px}
+  #screen{padding:28px 28px 40px}
+  .recipe-grid,.storage-grid,.shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .detail-grid{display:flex;flex-direction:column}
+  .toolbar .seg{margin:0}
+}
+
+/* ============================================================
+   Desktop: 1024px and up. Sidebar, table, side panels.
+   ============================================================ */
+@media (min-width:1024px){
+  #app{flex-direction:row}
+  .page{max-width:768px}
+  .tabs{order:-1;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:6px;width:248px;height:auto;flex-shrink:0;padding:28px 16px;border-top:0;border-right:var(--border);background:var(--white)}
+  .tabs::before{content:"One Munch Plan";display:block;font:800 26px/30px var(--display);margin:0 4px 20px}
+  .tab{flex-direction:row;justify-content:flex-start;min-height:48px;padding:0;font:500 16px/20px var(--sans)}
+  .tab-pill{flex-direction:row;gap:12px;width:100%;padding:10px 14px;border-radius:14px;border-width:2px}
+  .tab.on .tab-pill{background:var(--butter)}
+  #screen{padding:40px 48px 64px}
+  h1{font-size:44px;line-height:48px}
+  .recipe-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .storage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .shop-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .detail-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px;align-items:start}
+  .detail-primary{display:flex;flex-direction:column}
+  .detail-side{margin-top:0}
+  .detail-actions{position:static;background:none;padding:0}
+  .plan-only-desktop{display:block}
+  .plan-only-phone{display:none}
+  #overlay{justify-content:flex-end;align-items:stretch;background:rgba(26,26,26,.35)}
+  #overlay.center{justify-content:center;align-items:center}
+  #sheet{height:100%;max-height:none;width:440px;max-width:100%;border-top:0;border-left:var(--border);border-radius:0;padding:36px 32px;animation:panelIn 220ms cubic-bezier(.2,.8,.2,1)}
+  #overlay.center #sheet{height:auto;width:min(440px,calc(100% - 32px));border:var(--border);border-radius:var(--radius);padding:24px;animation:none}
+  .grip{display:none}
+  .toast{left:auto;right:32px;bottom:32px;width:380px}
+  .history-list{max-width:800px}
+}
+@keyframes panelIn{from{transform:translateX(28px);opacity:.6}to{transform:none;opacity:1}}
+
+/* ============================================================
+   Graceful degradation
+   ============================================================ */
+/* Older browsers without grid: stack everything, keep it usable */
+@supports not (display:grid){
+  .days{display:block}
+  .days .day{display:inline-flex;width:13%;margin:0 1% 6px 0;vertical-align:top}
+  .tabs{display:flex;justify-content:space-around}
+  .tab{flex:1}
+  .recipe-grid .card,.storage-grid .row-item,.shop-grid .shop-sec{margin-bottom:16px}
+  .plan-table{display:block;overflow-x:auto}
+}
+/* Browsers without the card and grid gap: keep spacing with margins */
+@supports not (gap:1px){
+  .chips,.stack,.seg{margin-left:-4px}
+  .chips>*,.stack>*{margin:4px}
+}
+/* Without backdrop or blur support nothing breaks: the scrim is a flat colour */
+@supports not (inset:0){
+  #overlay,#app{top:0;right:0;bottom:0;left:0}
+}
+/* Users who prefer less motion get opacity-only transitions */
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;animation:none !important}
+}
+/* Keyboard focus is always visible */
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+/* Print: show the plan as a plain table, hide chrome */
+@media print{
+  .tabs,#overlay,.toast,.toolbar .btn,.slot-controls,.empty-cell{display:none !important}
+  #app{height:auto;overflow:visible;display:block}
+  #screen{overflow:visible;padding:0}
+  .plan-table{min-width:0}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.5 12h11L21 7H6"/></symbol>
+  <symbol id="i-cartsvg" viewBox="0 0 122.88 112.75"><path fill="currentColor" stroke="none" fill-rule="evenodd" clip-rule="evenodd" d="M19.78,16.38h47.97c-0.64,2.13-1.05,4.35-1.22,6.65l-4.71-0.01h0l4.81,19.99h5.34 c1.28,1.85,2.76,3.55,4.4,5.08h-8.51l4.08,16.99l11.76-1.6h0l-2.86-11.92c2.39,1.52,5,2.73,7.77,3.56l1.79,7.44l0.85-0.12 c5.31-0.76,4.95,0.45,5.37-4.55l0.12-1.48c0.27,0.01,0.55,0.01,0.83,0.01c2,0,3.95-0.19,5.84-0.55l-0.53,6.82 c-0.52,6.16-0.08,4.67-6.61,5.6l-59.96,7.63l3.17,9.21c26.01,0,38.59,0,64.59,0c0.88,3.27,2.06,8.59,2.94,12.24H96.26l-1.03-3.73 c-21.67,0-29.93,0-51.61,0c-11.84-0.2-10.65,3-13.49-7.22L9.77,12.46H0V5.37h17.13C17.93,8.35,19.04,13.37,19.78,16.38L19.78,16.38 z M97.56,0c13.98,0,25.32,11.34,25.32,25.32c0,13.98-11.34,25.32-25.32,25.32c-13.98,0-25.32-11.34-25.32-25.32 C72.24,11.34,83.58,0,97.56,0L97.56,0z M86.36,25.99c0.34-1.97,2.59-3.07,4.36-2c0.16,0.1,0.31,0.21,0.46,0.34l0.01,0.01 c0.8,0.76,1.69,1.56,2.57,2.34l0.76,0.68l9-9.44c0.54-0.56,0.93-0.93,1.74-1.11c2.76-0.61,4.7,2.77,2.75,4.83L96.79,33.43 c-1.06,1.13-2.95,1.23-4.08,0.15c-0.65-0.6-1.36-1.22-2.07-1.84c-1.24-1.08-2.5-2.18-3.53-3.26 C86.48,27.86,86.21,26.84,86.36,25.99L86.36,25.99L86.36,25.99z M46.92,96.19c4.57,0,8.28,3.71,8.28,8.29 c0,4.58-3.71,8.28-8.28,8.28c-4.58,0-8.29-3.71-8.29-8.28C38.63,99.9,42.34,96.19,46.92,96.19L46.92,96.19z M81.09,96.19 c4.57,0,8.28,3.71,8.28,8.29c0,4.58-3.71,8.28-8.28,8.28c-4.58,0-8.29-3.71-8.29-8.28C72.8,99.9,76.51,96.19,81.09,96.19 L81.09,96.19z M26.92,43.01h13.19l-4.79-20.02c-4.71,0-9.37-0.01-13.92-0.01l1.61,5.99l0.05-0.01L26.92,43.01L26.92,43.01 L26.92,43.01z M42.22,23l4.79,20.01h12.71l-4.81-20L42.22,23L42.22,23L42.22,23z M65.24,66l-4.3-17.9l-12.71,0l4.69,19.59L65.24,66 L65.24,66L65.24,66z M46.22,68.59l-4.9-20.5H28.32l6.08,22.11L46.22,68.59L46.22,68.59z"/></symbol>
+  <symbol id="i-cog" viewBox="0 0 122.881 122.88"><path fill="currentColor" stroke="currentColor" stroke-width="4" stroke-linejoin="round" d="M97.977,18.705c-0.33-0.33-0.67-0.568-1.02-0.716c-0.328-0.139-0.711-0.207-1.15-0.207c-0.441,0-0.832,0.07-1.164,0.211c-0.344,0.145-0.676,0.379-0.994,0.702l-0.021,0.021l-6.207,6.188c-0.93,0.925-2.367,1.028-3.41,0.313c-0.73-0.472-1.508-0.927-2.324-1.368c-0.865-0.468-1.713-0.888-2.541-1.268c-0.863-0.394-1.744-0.765-2.641-1.113c-0.813-0.316-1.719-0.638-2.707-0.964c-1.131-0.373-1.85-1.425-1.85-2.556l0,0V8.43c0-0.456-0.072-0.859-0.215-1.21c-0.143-0.347-0.361-0.67-0.662-0.97c-0.293-0.293-0.611-0.51-0.959-0.651c-0.35-0.143-0.754-0.214-1.211-0.214H56.956c-0.423,0-0.798,0.068-1.126,0.204c-0.348,0.143-0.689,0.377-1.026,0.703L54.8,6.295c-0.296,0.296-0.514,0.611-0.654,0.946C54.002,7.584,53.93,7.98,53.93,8.43v8.714c0,1.325-0.957,2.426-2.217,2.651c-0.957,0.228-1.841,0.464-2.646,0.711c-0.882,0.27-1.769,0.577-2.658,0.924c-0.044,0.017-0.088,0.033-0.132,0.047c-0.777,0.302-1.596,0.652-2.456,1.049c-0.874,0.403-1.688,0.812-2.442,1.223c-1.063,0.579-2.345,0.364-3.165-0.443l-0.001,0.001l-6.874-6.775c-0.021-0.021-0.042-0.042-0.063-0.063l0,0.001c-0.293-0.31-0.601-0.537-0.924-0.678c-0.31-0.135-0.677-0.204-1.105-0.204c-0.425,0-0.805,0.072-1.139,0.215c-0.366,0.156-0.716,0.4-1.052,0.729l-0.002,0.002l-8.339,8.358l-0.005,0.006l0.005,0.005c-0.342,0.342-0.584,0.682-0.727,1.02c-0.139,0.328-0.208,0.711-0.208,1.149c0,0.442,0.07,0.832,0.211,1.166c0.145,0.343,0.378,0.675,0.702,0.993l0.021,0.021l6.188,6.208c0.925,0.93,1.028,2.367,0.313,3.41c-0.472,0.731-0.927,1.508-1.367,2.324c-0.468,0.866-0.888,1.712-1.268,2.542c-0.395,0.862-0.766,1.744-1.115,2.641c-0.316,0.812-0.637,1.718-0.963,2.706c-0.373,1.132-1.426,1.85-2.556,1.85v0.001H8.431c-0.458,0-0.86,0.071-1.211,0.213c-0.346,0.142-0.666,0.358-0.958,0.651L6.251,51.81l0,0c-0.293,0.293-0.51,0.612-0.652,0.958c-0.143,0.351-0.213,0.754-0.213,1.211v11.946c0,0.422,0.067,0.798,0.203,1.125c0.144,0.348,0.378,0.689,0.704,1.027l0.003,0.002c0.295,0.296,0.611,0.515,0.945,0.654c0.344,0.144,0.74,0.216,1.19,0.216h8.713c1.325,0,2.426,0.957,2.651,2.218c0.228,0.956,0.464,1.841,0.711,2.646c0.271,0.882,0.577,1.768,0.924,2.657c0.326,0.847,0.696,1.727,1.108,2.639c0.421,0.933,0.833,1.783,1.233,2.552c0.557,1.066,0.326,2.336-0.486,3.143l0.002,0.002l-6.776,6.756l-0.043,0.042h0.001c-0.31,0.294-0.537,0.602-0.677,0.924c-0.136,0.31-0.204,0.678-0.204,1.106c0,0.425,0.072,0.804,0.214,1.138c0.156,0.366,0.4,0.717,0.73,1.052l8.309,8.405c0.325,0.301,0.664,0.521,1.019,0.66c0.356,0.141,0.76,0.21,1.212,0.21c0.456,0,0.867-0.071,1.229-0.214c0.348-0.137,0.675-0.347,0.978-0.631l6.159-6.257c0.929-0.944,2.384-1.057,3.438-0.329c0.729,0.47,1.504,0.923,2.318,1.362c0.866,0.469,1.712,0.889,2.542,1.268c0.862,0.396,1.744,0.767,2.641,1.115c0.812,0.315,1.717,0.637,2.706,0.963c1.132,0.373,1.85,1.426,1.85,2.556h0.001v9.518c0,0.456,0.071,0.859,0.214,1.21c0.142,0.347,0.358,0.666,0.651,0.959l0.005,0.006l0.005-0.006c0.587,0.587,1.307,0.876,2.169,0.876h11.944c0.424,0,0.799-0.067,1.127-0.203c0.348-0.144,0.689-0.378,1.025-0.704l0.004-0.003c0.295-0.296,0.514-0.611,0.654-0.945c0.145-0.344,0.217-0.739,0.217-1.189v-8.715c0-1.324,0.955-2.426,2.217-2.65c0.955-0.228,1.84-0.465,2.646-0.711c0.881-0.271,1.768-0.577,2.656-0.923c0.848-0.327,1.729-0.697,2.643-1.109c0.93-0.421,1.781-0.832,2.547-1.232c1.068-0.557,2.338-0.325,3.145,0.486l0.002-0.002l6.756,6.775l0.041,0.043v-0.001c0.297,0.312,0.605,0.538,0.926,0.678c0.314,0.135,0.693,0.204,1.145,0.204c0.443,0,0.828-0.072,1.16-0.215c0.334-0.145,0.645-0.368,0.928-0.667c0.031-0.034,0.064-0.067,0.1-0.1l8.369-8.272c0.299-0.324,0.52-0.664,0.658-1.019c0.141-0.356,0.211-0.761,0.211-1.213c0-0.456-0.07-0.867-0.213-1.229c-0.139-0.348-0.348-0.674-0.633-0.977l-6.256-6.16c-0.945-0.929-1.057-2.383-0.33-3.438c0.471-0.729,0.924-1.504,1.363-2.317c0.469-0.865,0.889-1.712,1.268-2.542c0.395-0.862,0.766-1.744,1.115-2.641c0.314-0.812,0.637-1.718,0.963-2.707c0.373-1.132,1.426-1.85,2.557-1.85v-0.001h9.516c0.457,0,0.861-0.071,1.211-0.214c0.346-0.142,0.666-0.358,0.959-0.65l0.01-0.011l0,0c0.293-0.294,0.512-0.613,0.652-0.96c0.143-0.35,0.213-0.753,0.213-1.21V56.955c0-0.422-0.066-0.798-0.203-1.126c-0.143-0.347-0.377-0.689-0.703-1.027l-0.004-0.003c-0.295-0.296-0.611-0.514-0.945-0.654c-0.342-0.144-0.738-0.216-1.189-0.216h-8.713c-1.342,0-2.453-0.979-2.658-2.262c-0.211-0.843-0.449-1.698-0.719-2.566c-0.26-0.833-0.564-1.714-0.92-2.645c-0.018-0.045-0.033-0.091-0.047-0.137c-0.338-0.885-0.684-1.717-1.039-2.496c-0.385-0.843-0.793-1.658-1.225-2.446c-0.578-1.063-0.363-2.345,0.443-3.165v-0.001l6.775-6.874c0.021-0.021,0.041-0.042,0.063-0.063v0c0.311-0.293,0.537-0.601,0.678-0.923c0.135-0.31,0.205-0.677,0.205-1.105c0-0.425-0.072-0.805-0.215-1.139c-0.156-0.366-0.4-0.716-0.73-1.052l-0.002-0.002l-8.359-8.339L97.977,18.705L97.977,18.705L97.977,18.705z M99.039,13.044c1.002,0.423,1.912,1.042,2.732,1.862l0.002,0.001l8.381,8.362l0.021,0.021c0.807,0.82,1.424,1.723,1.846,2.713c0.436,1.021,0.656,2.102,0.656,3.243c0,1.158-0.225,2.24-0.668,3.251c-0.432,0.992-1.063,1.874-1.879,2.653l-5.367,5.445c0.158,0.329,0.316,0.662,0.469,0.999c0.43,0.938,0.824,1.878,1.182,2.819c0.02,0.042,0.037,0.085,0.053,0.129c0.357,0.937,0.699,1.933,1.025,2.981c0.105,0.338,0.207,0.678,0.305,1.021h6.652c1.156,0,2.238,0.212,3.252,0.636c0.996,0.417,1.896,1.032,2.699,1.841l0.057,0.057c0.791,0.818,1.391,1.72,1.799,2.71c0.418,1.007,0.625,2.062,0.625,3.167V68.9c0,1.149-0.203,2.225-0.613,3.23c-0.41,1.003-1.021,1.914-1.838,2.733l-0.004,0.003l-0.006,0.007l-0.004,0.004c-0.82,0.817-1.73,1.43-2.736,1.84c-1.006,0.409-2.082,0.613-3.23,0.613h-7.609c-0.133,0.358-0.271,0.728-0.42,1.106c-0.381,0.979-0.793,1.958-1.24,2.936c-0.463,1.011-0.934,1.966-1.414,2.857c-0.158,0.292-0.32,0.583-0.486,0.874l4.75,4.676c0.035,0.033,0.068,0.066,0.104,0.102c0.779,0.824,1.365,1.739,1.76,2.739c0.396,1.004,0.592,2.068,0.592,3.186c0,1.114-0.195,2.169-0.588,3.169c-0.393,0.997-0.973,1.908-1.744,2.734v-0.001c-0.027,0.028-0.055,0.058-0.084,0.086l-8.43,8.333c-0.791,0.829-1.682,1.463-2.682,1.893c-1.01,0.436-2.102,0.657-3.283,0.657c-1.156,0-2.246-0.226-3.27-0.667c-1.014-0.439-1.91-1.074-2.691-1.898l-5.344-5.358c-0.357,0.172-0.707,0.335-1.047,0.489c-0.91,0.41-1.883,0.815-2.916,1.214c-0.971,0.378-1.984,0.727-3.035,1.049c-0.35,0.107-0.695,0.209-1.035,0.306v6.638c0,1.155-0.213,2.238-0.637,3.251c-0.418,0.997-1.031,1.896-1.842,2.7l-0.057,0.058c-0.818,0.789-1.721,1.388-2.709,1.798c-1.008,0.417-2.063,0.624-3.168,0.624H53.979c-2.349,0-4.333-0.81-5.977-2.454l0.005-0.005c-0.82-0.821-1.435-1.734-1.845-2.741c-0.41-1.006-0.614-2.081-0.614-3.23v-7.609c-0.359-0.133-0.728-0.272-1.107-0.42c-0.978-0.381-1.957-0.793-2.935-1.241c-1.011-0.462-1.966-0.934-2.858-1.415c-0.291-0.157-0.582-0.319-0.873-0.485l-4.676,4.75c-0.033,0.035-0.067,0.069-0.102,0.103c-0.824,0.781-1.739,1.367-2.739,1.761c-1.004,0.396-2.068,0.593-3.186,0.593c-1.114,0-2.17-0.195-3.169-0.589c-0.997-0.393-1.907-0.973-2.734-1.743l0.001-0.002c-0.029-0.026-0.058-0.054-0.085-0.083l-8.381-8.478c-0.806-0.82-1.423-1.724-1.845-2.714c-0.435-1.022-0.656-2.102-0.656-3.242c0-1.158,0.225-2.24,0.667-3.252c0.437-0.999,1.071-1.886,1.897-2.67l5.359-5.344c-0.172-0.357-0.336-0.707-0.49-1.05c-0.411-0.909-0.815-1.88-1.213-2.912c-0.378-0.971-0.728-1.984-1.05-3.036c-0.107-0.351-0.209-0.695-0.306-1.035H8.431c-1.156,0-2.239-0.213-3.251-0.637c-0.998-0.417-1.897-1.031-2.7-1.841L2.422,71.8c-0.79-0.817-1.389-1.72-1.798-2.709C0.207,68.083,0,67.028,0,65.925V53.979c0-1.149,0.204-2.225,0.614-3.23c0.41-1.005,1.021-1.916,1.839-2.735l0.001-0.001l0.006-0.005l0.005-0.005c0.82-0.818,1.73-1.43,2.736-1.84c1.005-0.41,2.081-0.613,3.23-0.613h7.609c0.132-0.359,0.272-0.728,0.42-1.107c0.38-0.978,0.793-1.957,1.241-2.936c0.462-1.011,0.933-1.966,1.415-2.857c0.16-0.297,0.326-0.594,0.496-0.891l-4.681-4.696l-0.002-0.001c-0.827-0.813-1.453-1.728-1.88-2.739c-0.437-1.032-0.653-2.118-0.653-3.249c0-1.129,0.215-2.205,0.649-3.232c0.43-1.017,1.05-1.932,1.863-2.745l0.005,0.005l8.356-8.376l0.021-0.021c0.82-0.806,1.723-1.423,2.713-1.845c1.022-0.435,2.102-0.657,3.243-0.657c1.157,0,2.239,0.225,3.251,0.667c0.992,0.433,1.874,1.063,2.653,1.88l5.441,5.362c0.327-0.162,0.653-0.317,0.978-0.467c0.837-0.386,1.761-0.775,2.772-1.167c0.043-0.02,0.087-0.038,0.131-0.055c0.971-0.378,1.985-0.728,3.037-1.05c0.35-0.107,0.695-0.209,1.035-0.306V8.43c0-1.155,0.213-2.238,0.637-3.25c0.417-0.998,1.032-1.897,1.841-2.701l0.057-0.057c0.818-0.79,1.72-1.388,2.709-1.797C54.796,0.207,55.851,0,56.956,0H68.9c1.148,0,2.225,0.203,3.23,0.613c1.01,0.412,1.924,1.027,2.748,1.85c0.814,0.816,1.428,1.728,1.84,2.737c0.41,1.005,0.613,2.081,0.613,3.229v7.61c0.359,0.133,0.727,0.273,1.107,0.42c0.977,0.38,1.955,0.793,2.934,1.24c1.012,0.462,1.967,0.934,2.857,1.416c0.299,0.161,0.596,0.326,0.893,0.496l4.695-4.681l0.002-0.001c0.813-0.827,1.729-1.453,2.738-1.88c1.033-0.437,2.117-0.653,3.248-0.653C96.936,12.396,98.012,12.61,99.039,13.044L99.039,13.044z M61.44,35.346c1.781,0,3.519,0.17,5.214,0.508c1.666,0.333,3.318,0.844,4.953,1.534l0.018,0.008l0.004-0.008c1.561,0.674,3.041,1.479,4.441,2.417c1.387,0.929,2.672,1.978,3.85,3.145l0.01,0.011l0,0c1.168,1.179,2.217,2.463,3.146,3.851c0.938,1.4,1.742,2.88,2.416,4.441c0.031,0.074,0.059,0.148,0.084,0.223c0.646,1.569,1.131,3.152,1.449,4.751c0.34,1.696,0.508,3.433,0.508,5.213c0,1.781-0.168,3.519-0.508,5.214c-0.332,1.667-0.844,3.317-1.533,4.953l-0.008,0.018l0.008,0.004c-0.674,1.561-1.479,3.04-2.416,4.44c-0.93,1.388-1.979,2.672-3.146,3.851l-0.01,0.011l0,0c-1.18,1.168-2.463,2.217-3.852,3.146c-1.398,0.938-2.879,1.742-4.439,2.416c-0.074,0.031-0.148,0.06-0.225,0.084c-1.568,0.647-3.152,1.131-4.75,1.45c-1.695,0.339-3.434,0.508-5.214,0.508c-1.781,0-3.518-0.169-5.213-0.508c-1.667-0.333-3.318-0.845-4.954-1.534l-0.018-0.008l-0.003,0.008c-1.561-0.674-3.042-1.479-4.441-2.416c-1.388-0.929-2.672-1.978-3.85-3.146l-0.01-0.011l0,0c-1.168-1.18-2.218-2.463-3.146-3.852c-0.937-1.399-1.742-2.88-2.415-4.439c-0.032-0.074-0.06-0.148-0.085-0.224c-0.647-1.569-1.131-3.152-1.45-4.751c-0.338-1.695-0.508-3.433-0.508-5.214c0-1.781,0.169-3.518,0.508-5.213c0.333-1.667,0.845-3.318,1.535-4.953l0.007-0.018l-0.007-0.003c0.673-1.561,1.479-3.041,2.415-4.44c0.929-1.389,1.978-2.672,3.146-3.852l0.011-0.01l0,0c1.178-1.167,2.462-2.216,3.849-3.145c1.4-0.937,2.881-1.743,4.442-2.417c0.074-0.032,0.148-0.06,0.224-0.084c1.569-0.647,3.151-1.13,4.75-1.449C57.922,35.516,59.659,35.346,61.44,35.346L61.44,35.346z M65.602,41.134c-1.344-0.269-2.73-0.403-4.162-0.403c-1.431,0-2.817,0.134-4.162,0.403c-1.306,0.261-2.553,0.635-3.741,1.122c-0.052,0.026-0.105,0.052-0.16,0.075c-1.298,0.561-2.492,1.205-3.58,1.933c-1.096,0.733-2.11,1.563-3.044,2.487c-0.925,0.935-1.755,1.951-2.489,3.048c-0.728,1.087-1.372,2.28-1.932,3.578l-0.007-0.003c-0.521,1.237-0.917,2.539-1.191,3.905c-0.268,1.344-0.402,2.73-0.402,4.161s0.134,2.817,0.402,4.162c0.261,1.306,0.636,2.553,1.123,3.741c0.026,0.053,0.052,0.105,0.075,0.16c0.56,1.298,1.204,2.49,1.931,3.577c0.734,1.097,1.564,2.113,2.49,3.048c0.934,0.925,1.949,1.754,3.045,2.487c1.087,0.728,2.28,1.372,3.579,1.933l-0.003,0.007c1.238,0.521,2.539,0.918,3.905,1.19c1.344,0.269,2.731,0.402,4.162,0.402c1.431,0,2.818-0.134,4.162-0.402c1.307-0.261,2.553-0.635,3.742-1.122c0.051-0.026,0.105-0.052,0.16-0.075c1.297-0.561,2.49-1.205,3.578-1.933c1.096-0.733,2.111-1.563,3.045-2.487c0.926-0.935,1.756-1.95,2.49-3.047c0.727-1.087,1.371-2.28,1.93-3.578l0.008,0.003c0.521-1.237,0.918-2.539,1.191-3.904c0.268-1.345,0.402-2.731,0.402-4.162s-0.135-2.817-0.402-4.161c-0.262-1.307-0.635-2.553-1.123-3.742c-0.027-0.052-0.051-0.105-0.076-0.16c-0.559-1.298-1.203-2.491-1.932-3.578c-0.732-1.097-1.563-2.113-2.488-3.047c-0.934-0.924-1.949-1.754-3.045-2.487c-1.088-0.728-2.281-1.372-3.578-1.933l0.002-0.007C68.27,41.804,66.969,41.407,65.602,41.134L65.602,41.134z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9 6.8 19.5l1-5.8-4.2-4.1 5.8-.8z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.3-4.3"/></symbol>
+  <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-chev-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 9"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v4h4M12 8v4l3 2"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4M7 9l5-5 5 5M5 20h14"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3v5M12 16v5M3 12h5M16 12h5M6 6l3 3M15 15l3 3M18 6l-3 3M9 15l-3 3"/></symbol>
+</svg>
+
+<noscript>
+  <p style="padding:24px;font:700 16px/22px system-ui,sans-serif">One Munch Plan needs JavaScript to run. Please turn JavaScript on, then reload the page.</p>
+</noscript>
+
+<div id="app">
+  <nav class="tabs" id="tabs" aria-label="Main"></nav>
+  <main id="screen" tabindex="-1"></main>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <div id="overlay" hidden><div id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div></div>
+</div>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+
+<script>
+/* ---------- constants ---------- */
+let DAYS=[];
+let DATES=[];
+let WEEK_START=null;
+function weekDate(i){ return new Date(WEEK_START.getFullYear(),WEEK_START.getMonth(),WEEK_START.getDate()+i); }
+function computeWeek(){
+ const t=new Date(), start=S.weekStart||0;
+ WEEK_START=new Date(t.getFullYear(),t.getMonth(),t.getDate()-((t.getDay()-start+7)%7));
+ const names=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+ DAYS=[]; DATES=[];
+ for(let i=0;i<7;i++){ const d=weekDate(i); DAYS.push(names[d.getDay()]); DATES.push(d.getDate()); }
+}
+function weekRangeLabel(){ const f=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); return `${f(WEEK_START)} – ${f(weekDate(6))}`; }
+function changeWeekStart(n){
+ const cur=S.weekStart||0; if(n===cur) return;
+ const delta=n-cur, np=emptyPlan();
+ S.plan.forEach((day,i)=>{ np[(i-delta+7)%7]=day; });
+ S.plan=np; S.weekStart=n; computeWeek();
+}
+const SLOTS=['Breakfast','Lunch','Dinner'];
+const LOCS=['Fridge','Freezer','Storage'];
+const EFFORTS=['Quick','Moderate','Extensive'];
+const STATUSES=['Planned','Cooked','Skipped','Eat out'];
+const PERIODS=['Week','Month','Year','All time'];
+const TABS=[['home','Home','home'],['pantry','Storage','box'],['plan','Plan','calendar'],['shop','Shop','bag'],['recipes','Recipes','book']];
+const PASTELS=['#FFE98A','#A8DCFF','#CDB8FF','#B8F2D0','#FFC4A8','#FFB3C7'];
+const INGREDIENTS={
+ Produce:'Carrot|Broccoli|Cauliflower|Spinach|Kale|Lettuce|Romaine Lettuce|Cabbage|Bok Choy|Choy Sum|Brussels Sprouts|Asparagus|Green Beans|Snap Peas|Celery|Cucumber|Zucchini|Yellow Squash|Eggplant|Bell Pepper|Jalapeno Pepper|Serrano Pepper|Tomato|Cherry Tomato|Red Onion|Yellow Onion|White Onion|Shallot|Garlic|Ginger|Mushroom|Corn|Potato|Sweet Potato|Kabocha|Radish|Beet|Turnip|Leek|Squash|Pumpkin|Scallion|Artichoke|Okra|Avocado|Cilantro|Parsley|Basil|Mint|Dill|Rosemary|Thyme|Oregano|Apple|Banana|Orange|Lemon|Lime|Grapefruit|Grapes|Strawberry|Blueberry|Raspberry|Blackberry|Pineapple|Mango|Peach|Pear|Watermelon|Cantaloupe|Kiwi|Pomegranate|Coconut',
+ Meat:'Ground Beef|Beef Chuck|Ribeye Steak|Strip Steak|Beef Tenderloin|Brisket|Short Ribs|Ground Pork|Pork Chop|Pork Shoulder|Pork Tenderloin|Bacon|Ham|Ground Lamb|Lamb Chop|Leg of Lamb',
+ Poultry:'Chicken Breast|Chicken Thigh|Chicken Drumstick|Whole Chicken|Ground Turkey|Turkey Breast|Duck Breast|Whole Duck',
+ Seafood:'Salmon|Tilapia|Cod|Haddock|Mahi Mahi|Tuna|Trout|Catfish|Shrimp|Scallops|Crab|Lobster|Mussels|Clams|Oysters',
+ Rice:'Long Grain White Rice|Jasmine Rice|Basmati Rice|Sushi Rice|Brown Rice|Wild Rice|Black Rice|Red Rice',
+ Grains:'Rolled Oats|Steel Cut Oats|Farro|Bulgur|Couscous|Quinoa|Millet|Amaranth|Barley|Polenta',
+ Beans:'Black Beans|Pinto Beans|Kidney Beans|Great Northern Beans|Cannellini Beans|Navy Beans|Brown Lentils|Red Lentils|Green Lentils|Chickpeas|Split Peas',
+ Dairy:'Whole Milk|2 Percent Milk|Skim Milk|Almond Milk|Soy Milk|Oat Milk|Cheddar Cheese|Mozzarella Cheese|Parmesan Cheese|Feta Cheese|Swiss Cheese|Monterey Jack Cheese|Yogurt|Greek Yogurt|Sour Cream|Butter|Cottage Cheese',
+ Eggs:'Large Eggs|Egg Whites',
+ Sauces:'Soy Sauce|Tamari|Fish Sauce|Hoisin Sauce|Oyster Sauce|Sriracha|Gochujang|Sesame Oil|Marinara Sauce|Alfredo Sauce|Pesto|Ketchup|Mustard|Mayonnaise|Hot Sauce|BBQ Sauce|Ranch Dressing|Vinaigrette',
+ Oils:'Olive Oil|Avocado Oil|Canola Oil|Vegetable Oil|White Vinegar|Apple Cider Vinegar|Rice Vinegar|Balsamic Vinegar',
+ Pantry:'All Purpose Flour|Bread Flour|Cornstarch|Baking Powder|Baking Soda|Granulated Sugar|Brown Sugar|Honey|Peanuts|Almonds|Walnuts|Cashews|Pecans|Pumpkin Seeds|Sunflower Seeds|Peanut Butter|Jam|Maple Syrup',
+ Seasoning:'Salt|Black Pepper|Garlic Powder|Onion Powder|Paprika|Smoked Paprika|Cumin|Chili Powder|Cinnamon|Italian Seasoning|Curry Powder|Turmeric',
+ Frozen:'Frozen Peas|Frozen Corn|Frozen Broccoli|Frozen Mixed Berries|Frozen Mango|Frozen Pizza'
+};
+const INGREDIENT_CATALOG=Object.entries(INGREDIENTS).flatMap(([section,names])=>names.split('|').map(name=>({name,section})));
+const SECTION={Lime:'Produce',Cilantro:'Produce',Scallions:'Produce',Carrot:'Produce',Onion:'Produce',Basil:'Herbs and spices',Cumin:'Herbs and spices','Shredded cheese':'Dairy','Fresh mozzarella':'Dairy',Eggs:'Dairy',Milk:'Dairy','Greek yogurt':'Dairy'};
+const CAT_LOC={Dairy:'Fridge',Produce:'Fridge',Meat:'Fridge',Poultry:'Fridge',Seafood:'Fridge',Eggs:'Fridge',Frozen:'Freezer','Herbs and spices':'Fridge'};
+const desktopQuery=window.matchMedia?window.matchMedia('(min-width:1024px)'):null;
+const isDesktop=()=>!!(desktopQuery&&desktopQuery.matches);
+
+/* ---------- seed data ---------- */
+const RECIPES0=[
+ {id:'tacos',name:'Black bean tacos',effort:'Moderate',yield:2,rating:4,
+  ing:[['Black beans','1 can'],['Corn tortillas','4'],['Cumin','1 tsp'],['Lime','1'],['Cilantro','1 bunch']],
+  steps:['Warm the tortillas in a dry pan, about 1 minute per side.','Heat the beans with cumin and a pinch of salt until hot.','Squeeze lime over the beans and fold in chopped cilantro.','Fill the tortillas and serve two, saving any extra beans for lunch.']},
+ {id:'rice',name:'Egg fried rice',effort:'Quick',yield:2,rating:0,
+  ing:[['Eggs','2'],['Rice','1 cup'],['Soy sauce','1 tbsp'],['Oil','1 tbsp'],['Scallions','2']],
+  steps:['Scramble the eggs in oil, then set them aside.','Fry the rice with soy sauce until hot.','Stir the eggs back in and top with sliced scallions.']},
+ {id:'quesadilla',name:'Turkey quesadilla',effort:'Quick',yield:2,rating:3,
+  ing:[['Flour tortillas','2'],['Shredded cheese','1 cup'],['Cooked turkey','1/2 cup'],['Lime','1']],
+  steps:['Layer cheese and turkey on a tortilla and fold it over.','Cook in a dry pan until golden, about 2 minutes per side.']},
+ {id:'caprese',name:'Caprese pasta',effort:'Quick',yield:2,rating:4,
+  ing:[['Pasta','8 oz'],['Tomatoes, canned','1 can'],['Fresh mozzarella','4 oz'],['Basil','1 handful']],
+  steps:['Boil the pasta until tender and drain.','Toss with tomatoes, mozzarella, and torn basil.']},
+ {id:'lentil',name:'Lentil soup',effort:'Moderate',yield:2,rating:5,
+  ing:[['Lentils','1 cup'],['Onion','1'],['Carrot','1'],['Tomatoes, canned','1 can'],['Oil','1 tbsp']],
+  steps:['Sauté the onion and carrot in oil.','Add lentils, tomatoes, and water, then simmer 25 minutes.']},
+ {id:'birria',name:'Beef birria tacos',effort:'Extensive',yield:2,rating:3,
+  ing:[['Beef chuck','1 lb'],['Guajillo chiles','4'],['Ancho chiles','2'],['Bay leaves','2'],['Corn tortillas','8']],
+  steps:['Toast the chiles, then blend with spices and broth.','Braise the beef in the sauce for 3 hours.']},
+ {id:'oats',name:'Overnight oats',effort:'Quick',yield:2,rating:4,
+  ing:[['Oats','1/2 cup'],['Milk','1/2 cup'],['Greek yogurt','1/4 cup']],
+  steps:['Stir oats, milk, and yogurt together in a jar.','Refrigerate overnight and eat cold.']}
+];
+const PANTRY0=[
+ {id:'p1',name:'Eggs',loc:'Fridge',expiry:'',store:''},
+ {id:'p2',name:'Milk',loc:'Fridge',expiry:'2026-11-04',store:''},
+ {id:'p3',name:'Greek yogurt',loc:'Fridge',expiry:'',store:''},
+ {id:'p4',name:'Carrot',loc:'Fridge',expiry:'',store:''},
+ {id:'p5',name:'Corn tortillas',loc:'Storage',expiry:'',store:''},
+ {id:'p6',name:'Black beans',loc:'Storage',expiry:'',store:''},
+ {id:'p7',name:'Cumin',loc:'Storage',expiry:'',store:''},
+ {id:'p8',name:'Soy sauce',loc:'Storage',expiry:'',store:''},
+ {id:'p9',name:'Pasta',loc:'Storage',expiry:'',store:''},
+ {id:'p10',name:'Lentils',loc:'Storage',expiry:'',store:''},
+ {id:'p11',name:'Tomatoes, canned',loc:'Storage',expiry:'',store:''},
+ {id:'p12',name:'Onion',loc:'Storage',expiry:'',store:''},
+ {id:'p13',name:'Rice',loc:'Storage',expiry:'',store:''},
+ {id:'p14',name:'Oil',loc:'Storage',expiry:'',store:''},
+ {id:'p15',name:'Oats',loc:'Storage',expiry:'',store:''},
+ {id:'p16',name:'Frozen peas',loc:'Freezer',expiry:'',store:''}
+];
+const SHOP0=[
+ {id:'s1',name:'Lime',section:'Produce',bought:false,src:'2-Dinner'},
+ {id:'s2',name:'Cilantro',section:'Produce',bought:false,src:'2-Dinner'},
+ {id:'s3',name:'Shredded cheese',section:'Dairy',bought:true,src:''},
+ {id:'s4',name:'Fresh mozzarella',section:'Dairy',bought:false,src:''},
+ {id:'s5',name:'Basil',section:'Herbs and spices',bought:false,src:''}
+];
+const HIST0=[
+ {id:'h1',date:'2026-11-02',slot:'Breakfast',title:'Overnight oats',status:'Cooked',stars:4},
+ {id:'h2',date:'2026-11-02',slot:'Lunch',title:'Deli turkey wrap',status:'Eat out',stars:4},
+ {id:'h3',date:'2026-11-02',slot:'Dinner',title:'Lentil soup',status:'Skipped',stars:0},
+ {id:'h4',date:'2026-10-28',slot:'Dinner',title:'Black bean tacos',status:'Cooked',stars:4},
+ {id:'h5',date:'2026-10-15',slot:'Dinner',title:'Caprese pasta',status:'Cooked',stars:4},
+ {id:'h6',date:'2026-09-30',slot:'Lunch',title:'Deli turkey wrap',status:'Eat out',stars:3},
+ {id:'h7',date:'2026-09-12',slot:'Dinner',title:'Beef birria tacos',status:'Cooked',stars:3}
+];
+const emptyPlan=()=>Array.from({length:7},()=>({Breakfast:null,Lunch:null,Dinner:null}));
+function seedPlan(){
+ const p=emptyPlan();
+ p[1].Breakfast={title:'Overnight oats',recipeId:'oats',status:'Cooked',stars:4,leftovers:false,locked:false};
+ p[1].Lunch={title:'Deli turkey wrap',recipeId:null,status:'Eat out',stars:4,leftovers:false,locked:false};
+ p[1].Dinner={title:'Lentil soup',recipeId:'lentil',status:'Skipped',stars:0,leftovers:false,locked:false};
+ p[3].Dinner={title:'Black bean tacos',recipeId:'tacos',status:'Planned',stars:0,leftovers:false,locked:false};
+ return p;
+}
+
+/* ---------- state ---------- */
+const clone=o=>JSON.parse(JSON.stringify(o));
+let S={
+ tab:'home', loc:'Fridge', q:'',
+ pantry:clone(PANTRY0), recipes:clone(RECIPES0), shop:clone(SHOP0),
+ plan:seedPlan(), history:clone(HIST0),
+ day:2, rfilter:'All', open:null, servings:2,
+ hperiod:'Week', hfilter:'All', mergeMode:'merge', genEffort:'Quick', lockSheet:false, shopQuery:''
+};
+let editing=null, checkoff=null, gen=null, pick={d:2,s:'Dinner'}, pending=null, histEditState=null;
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,9);
+const ic=(n,c='')=>`<svg class="ic ${c}" aria-hidden="true" focusable="false"><use href="#i-${n}"/></svg>`;
+const hash=s=>[...String(s)].reduce((a,c)=>a+c.charCodeAt(0),0);
+const img=(seed,c='')=>`<div class="img ${c}" style="background:${PASTELS[hash(seed)%PASTELS.length]}" role="img" aria-label="Photo placeholder">${ic('photo')}</div>`;
+const stars=n=>'★'.repeat(n)+'☆'.repeat(5-n);
+const pl=(n,w)=>`${n} ${w}${n===1?'':'s'}`;
+const rec=id=>S.recipes.find(r=>r.id===id);
+const inPantry=n=>S.pantry.some(p=>p.name.toLowerCase()===n.toLowerCase());
+const onShop=n=>S.shop.some(x=>x.name.toLowerCase()===n.toLowerCase());
+const sectionFor=n=>INGREDIENT_CATALOG.find(x=>x.name.toLowerCase()===n.toLowerCase())?.section||SECTION[n]||'Other';
+const missingOf=r=>r?r.ing.filter(([n])=>!inPantry(n)).map(([n])=>n):[];
+const allNames=()=>[...new Set(S.recipes.flatMap(r=>r.ing.map(i=>i[0])))];
+const shopFor=key=>S.shop.filter(x=>x.src===key&&!x.bought);
+const ratingDisplay=r=>r.rating?`<span class="stars-inline" aria-label="${r.rating} of 5 stars">${stars(r.rating)}</span>`:'Not rated yet';
+const statusClass=st=>st==='Cooked'?'cooked':st==='Eat out'?'eat':st==='Skipped'?'skipped':'planned';
+const pillFor=st=>`<span class="pill pill--${statusClass(st)}">${esc(st)}</span>`;
+const missingLine=m=>m.length?`<p class="missing"><b>Missing:</b> ${esc(m.join(', '))}</p>`:'';
+function toast(msg,err){const t=$('#toast');t.textContent=msg;t.classList.toggle('toast--err',!!err);t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2500);}
+function openSheet(html,opts={}){
+ const sheet=$('#sheet'), overlay=$('#overlay');
+ if(!opts.lock) html=`<button class="icon-btn sheet-x" data-act="closeSheet" aria-label="Close">${ic('x')}</button>`+html;
+ const wasOpen=!overlay.hidden;
+ const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const desktop=getComputedStyle(overlay).alignItems==='stretch';
+ const morph=wasOpen&&!reduce&&!desktop&&!opts.center;
+ const fromH=morph?sheet.getBoundingClientRect().height:0;
+ sheet.innerHTML=html;
+ overlay.classList.toggle('center',!!opts.center);
+ overlay.hidden=false;
+ S.lockSheet=!!opts.lock;
+ if(morph){
+  sheet.style.height='auto';
+  const toH=sheet.getBoundingClientRect().height;
+  if(Math.abs(toH-fromH)>2){
+   sheet.style.height=fromH+'px';
+   sheet.getBoundingClientRect();
+   sheet.style.transition='height 300ms cubic-bezier(.2,.8,.2,1)';
+   sheet.style.height=toH+'px';
+   const done=()=>{sheet.style.height='';sheet.style.transition='';};
+   sheet.addEventListener('transitionend',function h(e){ if(e.target===sheet){ sheet.removeEventListener('transitionend',h); done(); } });
+   setTimeout(done,340);
+  } else { sheet.style.height=''; }
+ }
+ const first=$('#sheet input, #sheet button:not(.sheet-x)');
+ if(first&&!wasOpen) setTimeout(()=>first.focus(),30);
+}
+function forceClose(){S.lockSheet=false;S.histOpen=false;$('#overlay').hidden=true;}
+function closeSheet(){if(S.lockSheet)return;pending=null;S.histOpen=false;$('#overlay').hidden=true;}
+
+/* ---------- render ---------- */
+const isoRe=/^\d{4}-\d{2}-\d{2}$/;
+function isoDay(dt){return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;}
+function daysUntil(iso){
+ const [y,m,d]=iso.split('-').map(Number), t=new Date();
+ return Math.round((Date.UTC(y,m-1,d)-Date.UTC(t.getFullYear(),t.getMonth(),t.getDate()))/864e5);
+}
+function expiringSoon(){
+ return S.pantry.filter(x=>isoRe.test(x.expiry||''))
+  .map(x=>({...x,left:daysUntil(x.expiry)}))
+  .filter(x=>x.left>=0&&x.left<=3)
+  .sort((a,b)=>a.left-b.left);
+}
+function expiryDismissed(){
+ try{return localStorage.getItem('mp_expiry_dismissed')===isoDay(new Date());}catch(e){return false;}
+}
+function expiryBanner(){
+ const items=expiringSoon();
+ if(!items.length||expiryDismissed()) return '';
+ const lines=items.map(x=>`${esc(x.name)} ${x.left===0?'expires today':x.left===1?'expires tomorrow':`expires in ${x.left} days`}`).join(' · ');
+ return `<div class="card" style="background:var(--butter);display:flex;gap:12px;align-items:flex-start">
+   <div class="card-body"><h4>${pl(items.length,'item')} expiring soon</h4><p class="muted" style="margin-top:4px">${lines}</p></div>
+   <button class="icon-btn" data-act="dismissExpiry" aria-label="Dismiss expiring items message">${ic('x')}</button></div>`;
+}
+function onboardingDismissed(){
+ try{return localStorage.getItem('mp_onboarded')==='1';}catch(e){return false;}
+}
+function onboardingSteps(){
+ const steps=[
+  'Add ingredients from your kitchen into <b>Storage</b>.',
+  'Pick meals for each day in <b>Plan</b>.',
+  'Add missing ingredients to your <b>Shop</b> list.',
+  'Mark meals <b>Cooked</b>, add a rating, and view them later in <b>History</b>.'
+ ];
+ return `<ol class="ob-steps">${steps.map((s,i)=>`<li><span class="ob-num">${i+1}</span><span>${s}</span></li>`).join('')}</ol>`;
+}
+function onboardingBanner(){
+ return '';
+ return `<div class="card" style="background:var(--lavender)">
+   <h4>Welcome to One Munch Plan!</h4>
+   ${onboardingSteps()}
+   <button class="btn btn--block" style="margin-top:14px;background:var(--butter)" data-act="dismissOnboarding">Got it</button></div>`;
+}
+function showTips(){
+ openSheet(`<div class="grip"></div><h2 id="sheetTitle">Welcome to One Munch Plan!</h2>
+  ${onboardingSteps()}
+  <div class="stack"><button class="btn btn--block" data-act="dataSheet">Back to Settings</button><button class="btn btn--primary btn--block" data-act="closeSheet">Close</button></div>`);
+}
+const PWA_KEY='mp_pwa_state';
+function isStandalone(){
+ return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||window.navigator.standalone===true;
+}
+function pwaState(){
+ try{return JSON.parse(localStorage.getItem(PWA_KEY)||'null');}catch(e){return null;}
+}
+function pwaSteps(){
+ const steps=['Open the menu. On iPhone, tap Share. On Android, tap More.','Choose <b>Add to Home Screen</b>. On some Android phones, it says <b>Install app</b>.','Tap <b>Add</b>. The app icon appears on your home screen.'];
+ return `<ol class="ob-steps">${steps.map((s,i)=>`<li><span class="ob-num">${i+1}</span><span>${s}</span></li>`).join('')}</ol>`;
+}
+function pwaCooling(){
+ try{return Date.now()-(+(localStorage.getItem('mp_onboarded_at')||0))<60000;}catch(e){return false;}
+}
+function pwaBanner(){
+ if(!onboardingDismissed()||isStandalone()||pwaCooling()) return '';
+ const st=pwaState();
+ if(st&&st.status==='added') return '';
+ let title='Add One Munch Plan to your home screen';
+ if(st&&st.status==='later'){
+  if(isoDay(new Date())<st.until) return '';
+  title='Enjoying One Munch Plan? Add it to your home screen';
+ }
+ return `<div class="card" style="background:var(--lavender)">
+   <h4>${title}</h4>
+   <p class="muted" style="margin-top:4px">Open it like an app, one tap away.</p>
+   ${pwaSteps()}
+   <div style="display:flex;gap:10px;margin-top:14px">
+    <button class="btn" style="flex:1" data-act="pwaLater">Not now</button>
+    <button class="btn btn--primary" style="flex:1" data-act="pwaAdded">Already added</button>
+   </div></div>`;
+}
+function useItUpCards(){
+ const items=expiringSoon();
+ const picked=[], seen=new Set();
+ for(const it of items){
+  if(picked.length>=2) break;
+  const r=S.recipes.find(x=>!seen.has(x.id)&&x.ing.some(([n])=>n.toLowerCase()===it.name.toLowerCase()));
+  if(!r) continue;
+  seen.add(r.id); picked.push({r,it});
+ }
+ if(!picked.length) return '';
+ const cards=picked.map(({r,it})=>{
+  const m=missingOf(r);
+  const when=it.left===0?'expires today':it.left===1?'expires tomorrow':`expires in ${it.left} days`;
+  return `<div class="card">
+   <div style="display:flex;gap:12px;align-items:flex-start">${photoEl(r.photo,r.name,'',r.id)}
+    <div class="card-body">
+     <p class="slot-label">Uses ${esc(it.name)}, ${when}</p>
+     <h4 style="margin-top:2px">${esc(r.name)}</h4>
+     ${missingLine(m)}
+    </div></div>
+   <button class="btn btn--primary btn--block" style="margin-top:12px" data-act="useItUp" data-id="${r.id}">Add to meal plan</button></div>`;
+ }).join('');
+ return `<h2 style="margin:24px 0 10px">Use it up</h2>${cards}`;
+}
+function clearBtn(which){ return `<button class="search-clear" data-act="clearSearch" data-id="${which}" aria-label="Clear search">${ic('x')}</button>`; }
+function bkState(){ if(!S.bk) S.bk={meals:0,recipes:0,lastBackup:null,reminded:false,lastRemind:null}; return S.bk; }
+function bkDays(ts){ return Math.floor((Date.now()-ts)/86400000); }
+function bkLastText(){ const b=bkState(); if(!b.lastBackup) return 'Never'; const d=bkDays(b.lastBackup); return d<=0?'Today':d===1?'1 day ago':`${d} days ago`; }
+function bkChanges(){ const b=bkState(); return b.meals+b.recipes; }
+function markBackup(){ const b=bkState(); const now=Date.now(); b.lastBackup=now; b.meals=0; b.recipes=0; b.reminded=true; b.lastRemind=now; }
+function bkShow(){
+ const b=bkState();
+ if(!b.reminded) return b.meals>=3||b.recipes>=3;
+ return bkDays(b.lastRemind)>=7&&bkChanges()>0;
+}
+function backupBanner(){
+ if(!bkShow()) return '';
+ const b=bkState();
+ return `<div class="card" style="background:var(--sky)">
+   <div style="display:flex;gap:12px;align-items:flex-start">
+    <div class="card-body"><h4>Time for a backup</h4><p class="muted" style="margin-top:4px">You have added ${b.meals} meal${b.meals===1?'':'s'} and ${b.recipes} recipe${b.recipes===1?'':'s'} since your last backup.</p></div>
+    <button class="icon-btn" data-act="bkDismiss" aria-label="Dismiss backup reminder">${ic('x')}</button>
+   </div>
+   <button class="btn btn--block" style="margin-top:14px" data-act="bkBackup">${ic('download')}Back up now</button></div>`;
+}
+const APP_NAME='One Munch Plan';
+const APP_VERSION='1.0.0';
+let updateAvailable=null, updateDismissed=false;
+function semverGt(a,b){ const x=String(a).split('.').map(Number), y=String(b).split('.').map(Number);
+ for(let i=0;i<3;i++){ const p=x[i]||0, q=y[i]||0; if(p>q) return true; if(p<q) return false; } return false; }
+async function checkVersion(){
+ try{ const r=await fetch('version.json',{cache:'no-store'}); if(!r.ok) return; const j=await r.json();
+  if(j&&j.version&&semverGt(j.version,APP_VERSION)){ updateAvailable=j.version; render(); } }catch(e){}
+}
+function updateBanner(){
+ if(!updateAvailable||updateDismissed) return '';
+ return `<div class="card" style="background:var(--butter)"><h4>Version ${esc(updateAvailable)} is available</h4><p class="muted" style="margin-top:4px">You are on ${APP_VERSION}. Back up your data first, then refresh to update.</p>
+  <div class="stack" style="margin-top:12px"><button class="btn btn--primary btn--block" data-act="updBackup">${ic('download')}Back up now</button><button class="btn btn--block" data-act="updRefresh">Refresh</button><button class="btn btn--block" data-act="updDismiss">Not now</button></div></div>`;
+}
+function footerHTML(){
+ if(S.open||S.rform) return '';
+ return `<footer class="app-foot">${APP_NAME} • Version ${APP_VERSION}</footer>`;
+}
+const TOUR=[
+ {title:'Welcome to One Munch Plan',body:'Let’s take a quick tour of the five places you’ll use most. It takes about a minute.',tab:null,target:null},
+ {title:'Storage',body:'Track what’s in your kitchen, from fridge to pantry, and see what’s about to expire.',tab:'pantry',target:'pantry'},
+ {title:'Recipes',body:'Add and save your recipes. Each one lists its ingredients and steps.',tab:'recipes',target:'recipes'},
+ {title:'Plan',body:'Choose a meal for each day of the week, using the recipes you’ve saved.',tab:'plan',target:'plan'},
+ {title:'Shop',body:'Your grocery list fills in with what you’re missing for the plan.',tab:'shop',target:'shop'},
+ {title:'Home',body:'Your daily hub for updating meal status, add ratings, and check ingredients that are about to expire. After exploring, head to Settings on this screen to clear the sample data and create your own.',tab:'home',target:'home'}
+];
+let tourStep=0;
+function tourRoot(){ let r=document.getElementById('tour'); if(!r){ r=document.createElement('div'); r.id='tour'; document.getElementById('app').appendChild(r); } return r; }
+function tourStart(){ tourStep=0; renderTour(); }
+function renderTour(){
+ const r=tourRoot(), st=TOUR[tourStep], last=tourStep===TOUR.length-1;
+ if(st.tab && S.tab!==st.tab){ S.tab=st.tab; S.open=null; S.rform=null; render(); }
+ const ar=document.getElementById('app').getBoundingClientRect();
+ const tabs=document.getElementById('tabs');
+ const desk=!!tabs && tabs.offsetHeight>=200;
+ const sideW=desk?tabs.getBoundingClientRect().width:0;
+ const t=st.target?document.querySelector(`#tabs [data-id="${st.target}"]`):null;
+ const tabsH=(!desk&&tabs)?tabs.offsetHeight:0;
+ const bottomMode=!desk&&!!t;
+ let spot='<div class="tour-scrim"></div>';
+ if(t){ const tr=t.getBoundingClientRect(); const extra=desk?4:0; spot=`<div class="tour-spot" style="left:${tr.left-ar.left-4}px;top:${tr.top-ar.top-4}px;width:${tr.width+8+extra}px;height:${tr.height+8+extra}px"></div>`; }
+ const back=tourStep>0?`<button class="btn" data-act="tourBack">Back</button>`:'';
+ const next=last?`<button class="btn btn--primary" data-act="tourFinish">Finish</button>`:`<button class="btn btn--primary" data-act="tourNext">${tourStep===0?'Start':'Next'}</button>`;
+ r.innerHTML=`${spot}<div class="tour-center" style="left:${sideW}px;bottom:${bottomMode?tabsH:0}px;align-items:${bottomMode?'flex-end':'center'}"><div class="tour-card" role="dialog" aria-label="Tour step ${tourStep+1} of ${TOUR.length}"><p class="meta">Step ${tourStep+1} of ${TOUR.length}</p><h2>${st.title}</h2><p class="muted" style="margin-top:8px">${st.body}</p><div class="tour-actions">${back}${next}</div>${last?'':'<button class="btn btn--block" style="margin-top:12px" data-act="tourSkip">Skip for now</button>'}</div></div>`;
+}
+function tourFinish(){
+ const r=document.getElementById('tour'); if(r) r.remove();
+ try{ localStorage.setItem('mp_onboarded','1'); localStorage.setItem('mp_onboarded_at',String(Date.now())); }catch(e){}
+ S.tab='home'; S.open=null; S.rform=null;
+}
+function todayIdx(){
+ return (new Date().getDay()-(S.weekStart||0)+7)%7;
+}
+function todayLabel(){
+ const dt=new Date();
+ return `Today · ${dt.toLocaleDateString('en-US',{weekday:'short'})}, ${dt.toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
+}
+function homeView(){
+ const d=todayIdx(), day=d<0?{}:S.plan[d];
+ const count=SLOTS.filter(s=>day[s]).length;
+ const rows=d<0?'':SLOTS.map(s=>slotCard(d,s,true)).join('');
+ const label=count?"View this week's meals":"Plan today's meals";
+ return `<div class="head"><div><p class="mono muted">${todayLabel()}</p><h1>What’s cooking?</h1></div><div class="toolbar"><button class="btn" data-act="dataSheet">${ic('cog')}<span class="btn-label">Settings</span></button></div></div>
+  ${onboardingBanner()}
+  ${expiryBanner()}
+  ${pwaBanner()}
+  ${backupBanner()}
+  <h2 style="margin:4px 0 10px">Today’s lineup</h2>
+  ${rows}
+  <button class="btn btn--primary btn--block" data-act="viewToday">${ic('calendar')}${label}</button>
+  ${useItUpCards()}`;
+}
+const VIEWS={home:homeView,pantry:pantryView,recipes:()=>S.rform?recipeFormView():recipesView(),plan:planView,shop:shopView,history:historyHTML};
+let animTab=null;
+let pendingChip=null;
+function updateParallax(){ const h=document.querySelector('#screen .page > .head'); if(h) h.style.transform=''; }
+function render(){
+ computeWeek();
+ const a=document.activeElement, focusId=a&&a.id, pos=a&&a.selectionStart;
+ $('#screen').innerHTML=`<div class="page${animTab!==S.tab?' enter':''}">${updateBanner()}${VIEWS[S.tab]()}${footerHTML()}</div>`; animTab=S.tab; updateParallax(); pendingChip=null; saveState();
+ $('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${S.tab===k?'on':''}" data-act="tab" data-id="${k}" aria-current="${S.tab===k?'page':'false'}"><span class="tab-pill">${ic(i)}<span>${l}</span></span></button>`).join('');
+ if(focusId){const el=document.getElementById(focusId); if(el){el.focus(); try{el.setSelectionRange(pos,pos);}catch(e){}}}
+}
+if(desktopQuery&&desktopQuery.addEventListener){desktopQuery.addEventListener('change',()=>render());}
+else if(desktopQuery&&desktopQuery.addListener){desktopQuery.addListener(()=>render());}
+
+/* ---------- Storage ---------- */
+function storageSuggestions(){
+ const q=S.q.trim().toLowerCase();
+ if(!q) return '';
+ const catalogMatches=INGREDIENT_CATALOG.filter(x=>x.name.toLowerCase().includes(q));
+ const matches=catalogMatches.filter(x=>!S.pantry.some(p=>p.name.toLowerCase()===x.name.toLowerCase())).sort((a,b)=>Number(!a.name.toLowerCase().startsWith(q))-Number(!b.name.toLowerCase().startsWith(q))).slice(0,8);
+ return `<div class="ingredient-suggestions" id="pantrySuggestions" role="listbox" aria-label="Ingredient matches">${matches.length?matches.map(x=>`<button class="ingredient-suggestion" role="option" aria-selected="false" aria-label="Add ${esc(x.name)} to storage, ${esc(x.section)}" data-act="pickStorageIng" data-id="${INGREDIENT_CATALOG.indexOf(x)}"><span>${esc(x.name)}</span><span class="ingredient-suggestion-category">${esc(x.section)}</span></button>`).join(''):`<p class="ingredient-suggestion-note">${catalogMatches.length?'All matching ingredients are already in your storage.':'No ingredient matches. You can still add this as a custom item.'}</p>`}</div>`;
+}
+function pantryView(){
+ const q=S.q.trim(), ql=q.toLowerCase();
+ const items=S.pantry.filter(p=>p.loc===S.loc&&(!ql||p.name.toLowerCase().includes(ql)));
+ const exact=!!ql&&S.pantry.some(p=>p.name.toLowerCase()===ql);
+ const rows=items.map(p=>`<div class="row-item">
+   ${photoEl(p.photo,p.name,'',p.id)}
+   <button class="grow" data-act="editItem" data-id="${p.id}">
+     <div class="name">${esc(p.name)}</div>
+     ${p.expiry?`<div class="meta">${p.expiry<='2026-11-05'?'<b>Use soon</b> · ':''}Expires <span class="mono" style="font-size:13px">${p.expiry}</span></div>`:''}
+   </button>
+   <div class="row-actions">
+     <button class="icon-btn" data-act="toShop" data-id="${p.id}" aria-label="Add ${esc(p.name)} to shopping list">${ic('cart')}</button>
+     <button class="icon-btn icon-btn--danger" data-act="removePantry" data-id="${p.id}" aria-label="Remove ${esc(p.name)}">${ic('trash')}</button>
+   </div>
+ </div>`).join('')||`<div class="empty">
+   <div class="blob blob--sky">${ic('box')}</div><p>Nothing in ${esc(S.loc.toLowerCase())} yet. Add something tasty.</p></div>`;
+ return `<div class="head"><div><p class="mono muted">${S.pantry.length} items</p><h1>Storage</h1></div>
+</div>
+   <div class="shop-search" style="margin-bottom:14px"><div class="shop-entry" style="margin-bottom:0"><div class="search-wrap" style="flex:1;margin-bottom:0">${ic('search')}<input class="search" id="pantrySearch" type="text" placeholder="Search ingredients" value="${esc(S.q)}" data-input="q" autocomplete="off" aria-label="Search ingredients">${S.q?clearBtn('q'):''}${storageSuggestions()}</div><button class="btn btn--primary" style="min-height:0" data-act="newItem" data-name="">${ic('plus')}Add</button></div></div>
+   <div class="seg" role="group" aria-label="Storage location">${LOCS.map(l=>`<button class="${S.loc===l?'on':''}" data-act="loc" data-id="${l}" aria-pressed="${S.loc===l}">${l==='Storage'?'Pantry':l}</button>`).join('')}</div>
+   <div class="storage-grid">${rows}</div>`;
+}
+function itemSheet(item,isNew){
+ return `<div class="grip"></div><h2 id="sheetTitle">${isNew?'Add item':'Edit item'}</h2>
+  <label class="lbl" for="fName">Name</label>
+  <input id="fName" type="text" value="${esc(item.name)}">
+  <input type="hidden" id="fPhoto" value="${esc(item.photo||'')}">
+  ${photoBlock('item', item.photo, item.name||'item')}
+  <p class="lbl">Where is it?</p>
+  <div class="seg" id="fLocSeg" role="group" aria-label="Location">${LOCS.map(l=>`<button class="${item.loc===l?'on':''}" data-act="fLoc" data-id="${l}" aria-pressed="${item.loc===l}">${l==='Storage'?'Pantry':l}</button>`).join('')}</div>
+  <input type="hidden" id="fLoc" value="${esc(item.loc||S.loc)}">
+  <label class="lbl" for="fExp">Expiry date (optional)</label>
+  <input id="fExp" type="date" value="${esc(item.expiry||'')}">
+  <label class="lbl" for="fStore">Store or location purchased (optional)</label>
+  <input id="fStore" type="text" placeholder="For example, Mike’s Supermarket" value="${esc(item.store||'')}">
+  <div class="stack"><button class="btn btn--primary btn--block" data-act="saveItem" data-id="${isNew?'':item.id}" ${(item.name||'').trim()?'':'disabled'}>Save</button>
+  <button class="btn btn--block" data-act="closeSheet">Cancel</button></div>`;
+}
+function saveItem(id){
+ const name=$('#fName').value.trim();
+ if(!name){toast('Give the item a name.',true);return;}
+ const data={name,loc:$('#fLoc').value,expiry:$('#fExp').value,store:$('#fStore').value.trim(),photo:$('#fPhoto').value||null};
+ if(id){const old=S.pantry.find(p=>p.id===id); if(old&&old.photo&&old.photo!==data.photo) photoDel(old.photo); Object.assign(old,data);}
+ else{S.pantry.push({id:uid(),...data}); S.q='';}
+ forceClose();
+ toast(id?'Item updated':'Item added');
+}
+
+/* ---------- Recipes ---------- */
+function cmpRecipe(mode){
+ return (x,y)=>{ const rx=x.r||x, ry=y.r||y;
+  if(mode==='za') return ry.name.localeCompare(rx.name);
+  if(mode==='rating') return (ry.rating||0)-(rx.rating||0)||rx.name.localeCompare(ry.name);
+  return rx.name.localeCompare(ry.name); };
+}
+function recipeSearchRow(q,mode,inputKey,inputId,selectId){
+ const opt=(v,l)=>`<option value="${v}" ${mode===v?'selected':''}>${l}</option>`;
+ return `<div class="shop-entry" style="margin-bottom:14px"><div class="search-wrap" style="flex:1;margin-bottom:0">${ic('search')}<input class="search" id="${inputId}" type="text" placeholder="Search a recipe" value="${esc(q||'')}" data-input="${inputKey}" autocomplete="off" aria-label="Search a recipe"></div><select class="sort-select" id="${selectId}" aria-label="Sort by">${opt('az','A-Z')}${opt('za','Z-A')}${opt('rating','Rating')}</select></div>`;
+}
+function recipesView(){
+ if(S.open&&rec(S.open)) return detailView(rec(S.open));
+ const list=S.recipes.filter(r=>(S.rfilter==='All'||r.effort===S.rfilter)&&r.name.toLowerCase().includes((S.rq||'').trim().toLowerCase())).sort(cmpRecipe(S.rsort||'az'));
+ return `<div class="head"><div><p class="mono muted">${S.recipes.length} recipes · serves 2</p><h1>Recipes</h1></div>
+   <button class="btn btn--primary" data-act="rfNew">${ic('plus')}Add recipe</button></div>
+  <div class="chip-scroll" role="group" aria-label="Filter by effort">${['All',...EFFORTS].map(f=>`<button class="chip chip--effort ${S.rfilter===f?'chip--on':''}" data-act="rfilter" data-id="${f}" aria-pressed="${S.rfilter===f}">${f}</button>`).join('')}</div>
+  ${recipeSearchRow(S.rq,S.rsort||'az','rq','recipeSearch','recipeSort')}
+  <div class="meal-heading-row"><h3>Choose a recipe</h3><div class="meal-view-toggle" role="group" aria-label="Recipe view"><button class="icon-btn ${S.rview==='full'?'icon-btn--on':''}" data-act="rview" data-id="full" aria-label="Full size cards" title="Full size cards" aria-pressed="${S.rview==='full'}">${ic('grid')}</button><button class="icon-btn ${S.rview==='full'?'':'icon-btn--on'}" data-act="rview" data-id="compact" aria-label="Compact cards" title="Compact cards" aria-pressed="${S.rview!=='full'}">${ic('list')}</button></div></div>
+  <div class="recipe-grid" style="${S.rview==='full'?'':'grid-template-columns:1fr;gap:12px'}">${list.map(r=>{const m=missingOf(r);return S.rview==='full'?`<button class="card card--tap" data-act="openRecipe" data-id="${r.id}" style="flex-direction:column;margin-bottom:0">
+    ${photoEl(r.photo,r.name,'img--wide',r.id)}
+    <div class="card-body"><h4>${esc(r.name)}</h4>
+    <div class="meta">${esc(r.effort)} · ${ratingDisplay(r)}</div>
+    ${missingLine(m)}</div></button>`:`<button class="card card--tap" data-act="openRecipe" data-id="${r.id}" style="display:flex;align-items:center;gap:12px;padding:8px 12px;text-align:left;width:100%;margin-bottom:0">
+    ${photoEl(r.photo,r.name,'',r.id)}
+    <div class="card-body"><h4 style="margin:0">${esc(r.name)}</h4>
+    <div class="meta">${esc(r.effort)} · ${ratingDisplay(r)}</div>${missingLine(m)}</div></button>`;}).join('')
+  || `<div class="empty" style="grid-column:1/-1"><div class="blob blob--lav">${ic('book')}</div><p>No recipes here yet. Add something tasty.</p></div>`}</div>`;
+}
+function detailView(r){
+ const m=missingOf(r);
+ return `<div class="head" style="margin-bottom:16px"><button class="btn" data-act="back" aria-label="Back to recipes">${ic('chev-left')}Back to recipes</button>
+  <button class="btn" data-act="rfEdit" data-id="${r.id}">${ic('pencil')}Edit</button></div>
+  <div class="detail-grid">
+   <div class="detail-primary">
+    ${photoEl(r.photo,r.name,'img--lg',r.id)}
+    <h1 style="margin-top:16px">${esc(r.name)}</h1>
+    <p class="meta">${esc(r.effort)} · ${ratingDisplay(r)}</p>
+    <div style="display:flex;gap:8px;align-items:center;margin:14px 0">
+      <select class="sort-select" id="servingsSel" aria-label="Servings">${[1,2,3,4,5,6,7,8].map(n=>`<option value="${n}" ${n===S.servings?'selected':''}>Serves ${n}</option>`).join('')}</select>
+    </div>
+    ${missingLine(m)}
+    <div class="detail-actions stack">
+      <button class="btn btn--primary btn--block" data-act="pickMeal">Add to meal plan</button>
+      <button class="btn btn--block" data-act="shopMissing" ${m.length?'':'disabled'}>Add missing items to shop</button>
+    </div>
+   </div>
+   <div class="detail-side">
+    <h3 style="margin-top:0">Ingredients <span class="section-tag">for ${r.yield}</span></h3>
+    <div class="list">${r.ing.map(([n,q])=>`<div class="checkrow"><span class="grow">${esc(n)}</span><span class="mono" style="font-size:14px">${esc(q)}</span>${m.includes(n)?'<span class="pill pill--planned">Missing</span>':''}</div>`).join('')}</div>
+    <h3>Steps</h3>
+    <div style="background:var(--white);border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px">
+    ${r.steps.map((s,i)=>`<div class="step"><span class="step-num">${i+1}</span><p>${esc(s)}</p></div>`).join('')}</div>
+   </div>
+  </div>`;
+}
+function pickSheet(){
+ const r=rec(S.open), existing=S.plan[pick.d][pick.s];
+ openSheet(`<div class="grip"></div><p class="meta">${esc(r.name)} · <span class="mono" style="font-size:13px">Serves ${S.servings}</span></p><h2 id="sheetTitle">Add to meal plan</h2>
+  <p class="lbl meal-status-label">Choose day</p>
+  <div class="days" role="group" aria-label="Day">${DAYS.map((d,i)=>`<button class="day ${pick.d===i?'on':''}" data-act="pickDay" data-id="${i}" aria-pressed="${pick.d===i}"><b>${DATES[i]}</b>${d}</button>`).join('')}</div>
+  <p class="lbl meal-status-label">Choose Meal</p>
+  <div class="seg" role="group" aria-label="Meal">${SLOTS.map(s=>`<button class="${pick.s===s?'on':''}" data-act="pickSlot" data-id="${s}" aria-pressed="${pick.s===s}">${s}</button>`).join('')}</div>
+  ${existing?`<div class="notice">${DAYS[pick.d]} ${esc(pick.s.toLowerCase())} already has ${esc(existing.title)}. Adding this will replace it.</div>`:''}
+  <div class="stack"><button class="btn btn--primary btn--block" data-act="confirmPick">Add to meal plan</button>
+  <button class="btn btn--block" data-act="closeSheet">Cancel</button></div>`);
+}
+function confirmPick(){
+ const r=rec(S.open);
+ S.plan[pick.d][pick.s]={title:r.name,recipeId:r.id,status:'Planned',stars:0,leftovers:false,locked:false};
+ pending={d:pick.d,s:pick.s,recipeId:r.id};
+ forceClose();
+ promptShop();
+}
+function promptShop(){
+ if(!pending) return;
+ const r=rec(pending.recipeId), miss=missingOf(r).filter(n=>!onShop(n));
+ if(!miss.length){pending=null;toast(`${r.name} added to the plan`);return;}
+ openSheet(`<div class="grip"></div><h2 id="sheetTitle">Add ${pl(miss.length,'missing item')} to your shopping list?</h2>
+  <p class="meta" style="font-size:16px">${esc(miss.join(', '))}</p>
+  <div class="stack"><button class="btn btn--primary btn--block" data-act="addMissing">Add to shop</button>
+  <button class="btn btn--block" data-act="closeSheet">Not now</button></div>`,{center:true});
+}
+function addMissing(){
+ if(!pending) return;
+ const r=rec(pending.recipeId), key=`${pending.d}-${pending.s}`;
+ missingOf(r).forEach(n=>{if(!onShop(n)) S.shop.push({id:uid(),name:n,section:sectionFor(n),bought:false,src:key});});
+ pending=null;
+ forceClose();
+ toast('Added to your shopping list');
+}
+
+/* ---------- Plan ---------- */
+function planView(){
+ const genRestButton=`<button class="btn btn--primary btn--block" data-act="genRest">${ic('sparkle')}Inspire me</button>`;
+ const headGen=`<button class="btn btn--primary plan-gen-head" data-act="genRest">${ic('sparkle')}Inspire me</button>`;
+ const head=`<div class="head"><div><p class="mono muted">Week of ${WEEK_START.toLocaleDateString('en-US',{month:'short',day:'numeric'})} · serves 2</p><h1>Plan</h1></div>
+   <div class="toolbar plan-actions">${headGen}<button class="btn" data-act="openHistory">${ic('history')}History</button></div></div>`;
+ if(isDesktop()){
+  return head+`<div class="table-wrap" role="region" aria-label="Weekly meal plan" tabindex="0">
+   <table class="plan-table">
+    <thead><tr><th scope="col">Day</th>${SLOTS.map(s=>`<th scope="col">${s}</th>`).join('')}</tr></thead>
+    <tbody>${DAYS.map((d,i)=>`<tr class="${S.day===i?'is-selected':''}">
+      <th scope="row"><button class="day-btn" data-act="day" data-id="${i}" aria-pressed="${S.day===i}"><b>${DATES[i]}</b>${d}</button></th>
+      ${SLOTS.map(s=>`<td>${cellFor(i,s)}</td>`).join('')}</tr>`).join('')}</tbody>
+   </table></div>`;
+ }
+ return head+`<div class="days" role="group" aria-label="Day of week">${DAYS.map((d,i)=>`<button class="day ${S.day===i?'on':''}" data-act="day" data-id="${i}" aria-pressed="${S.day===i}"><b>${DATES[i]}</b>${d}</button>`).join('')}</div>
+  ${SLOTS.map(s=>slotCard(S.day,s)).join('')}
+  <div class="stack plan-gen-foot">${genRestButton}</div>`;
+}
+function cellFor(d,s){
+ const e=S.plan[d][s];
+ if(!e) return `<button class="empty-cell" data-act="genSlot" data-day="${d}" data-slot="${s}">${ic('plus')}Add ${s.toLowerCase()}</button>`;
+ const r=rec(e.recipeId), isPlanned=e.status==='Planned', m=isPlanned?missingOf(r):[];
+ const showStars=(e.status==='Cooked'||e.status==='Eat out')&&e.stars;
+ const refresh='';
+ return `<div class="cell cell--filled slot--${statusClass(e.status)}">
+  <div class="cell-row">
+   <button class="cell-main" data-act="mealSheet" data-day="${d}" data-slot="${s}">
+    <span class="cell-title">${esc(e.title)}</span>
+    <span class="cell-meta">${pillFor(e.status)}${showStars?`<span class="stars-inline" aria-label="${e.stars} of 5 stars">${stars(e.stars)}</span>`:''}</span>
+    ${e.location?`<p class="missing">${esc(e.location)}</p>`:missingLine(m)}
+   </button>${refresh}
+  </div></div>`;
+}
+function recipeSheet(id){
+ const r=rec(id); if(!r) return;
+ const m=missingOf(r);
+ openSheet(`<div class="grip"></div>
+  <p class="meta" style="margin-top:40px">${esc(r.effort)} · Serves ${r.yield||2}</p>
+  <h2 id="sheetTitle">${esc(r.name)}</h2>
+  ${missingLine(m)}
+  <h3>Ingredients</h3>
+  <div style="display:grid">${r.ing.map(([n,a])=>`<div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:2px solid var(--ink)"><span>${esc(n)}</span><b>${esc(a||'')}</b></div>`).join('')}</div>
+  <h3>Steps</h3>
+  <ol class="ob-steps">${r.steps.map((t,i)=>`<li><span class="ob-num" style="background:var(--lavender)">${i+1}</span><span>${esc(t)}</span></li>`).join('')}</ol>`);
+}
+const MEAL_CUTOFF={Breakfast:10,Lunch:14,Dinner:20};
+function mealTimePassed(d,s){
+ if(d!==todayIdx()) return false;
+ const n=new Date(); return n.getHours()+n.getMinutes()/60>=MEAL_CUTOFF[s];
+}
+function slotCard(d,s,recipeBtn=false){
+ const e=S.plan[d][s];
+ if(!e) return `<button class="empty-card" data-act="genSlot" data-day="${d}" data-slot="${s}">${ic('plus')}<span><span class="slot-label">${s}</span><br>Empty · tap to suggest a meal</span></button>`;
+ const r=rec(e.recipeId), isPlanned=e.status==='Planned', m=isPlanned?missingOf(r):[];
+ const showStars=(e.status==='Cooked'||e.status==='Eat out')&&e.stars;
+ const rbtn=(recipeBtn&&e.recipeId&&r)?`<button class="icon-btn" data-act="recipeSheet" data-id="${e.recipeId}" aria-label="View recipe ${esc(e.title)}">${ic('book')}</button>`:'';
+ const refresh='';
+ const upd=(recipeBtn&&isPlanned&&mealTimePassed(d,s))?`<button class="btn btn--block" style="margin-top:12px;background:var(--mint)" data-act="mealSheet" data-day="${d}" data-slot="${s}">${ic('pencil')}Update status</button>`:'';
+ const actions=(!recipeBtn&&refresh)?`<div style="display:flex;flex-direction:column;gap:8px;align-items:center">${rbtn}${refresh}</div>`:'';
+ return `<div class="slot slot--${statusClass(e.status)}">
+   <div class="slot-row">
+    <button class="slot-top" data-act="mealSheet" data-day="${d}" data-slot="${s}">
+     ${thumbFor(e.recipeId,e.title,'')}
+     <div class="card-body">
+       <p class="slot-label">${s}</p>
+       <h4 style="margin-top:2px">${esc(e.title)}</h4>
+       <div style="margin-top:6px;display:flex;align-items:center;flex-wrap:wrap;gap:4px">${pillFor(e.status)}${showStars?`<span class="stars-inline" aria-label="${e.stars} of 5 stars">${stars(e.stars)}</span>`:''}</div>
+       ${e.location?`<p class="missing">${esc(e.location)}</p>`:missingLine(m)}
+     </div></button>${actions}
+   </div>${upd}</div>`;
+}
+function mealSheet(d,s){
+ const e=S.plan[d][s]; if(!e) return;
+ editing={d,s,status:e.status,stars:e.stars||0,leftovers:!!e.leftovers};
+ renderMealSheet();
+}
+function renderMealSheet(){
+ const ed=editing, title=S.plan[ed.d][ed.s].title;
+ const showStars=ed.status==='Cooked'||ed.status==='Eat out';
+ const recipeRow=rec(S.plan[ed.d][ed.s].recipeId)?`<button class="btn btn--block" style="background:var(--lavender)" data-act="recipeSheet" data-id="${S.plan[ed.d][ed.s].recipeId}">${ic('book')}View recipe</button>`:'';
+ openSheet(`<div class="grip"></div><p class="meta">${DAYS[ed.d]} · ${ed.s}</p><h2 id="sheetTitle">${esc(title)}</h2>
+  ${recipeRow}
+  <p class="lbl meal-status-label">How did it go?</p>
+  <div class="seg" role="group" aria-label="Status">${STATUSES.map(st=>`<button class="${ed.status===st?'on':''}" data-act="mStatus" data-id="${st}" aria-pressed="${ed.status===st}">${st==='Planned'?'Not yet':st}</button>`).join('')}</div>
+  ${showStars?`<p class="lbl meal-status-label">Worth eating again?</p>
+   <div class="stars" role="group" aria-label="Rating">${[1,2,3,4,5].map(n=>`<button class="${n<=ed.stars?'on':''}" aria-label="${n} stars" data-act="mStars" data-id="${n}">${ic('star')}</button>`).join('')}</div>
+   <p class="rating-text">${ed.stars?ed.stars+' of 5':'Tap a star to rate'}</p>`:''}
+  <div class="stack">${ed.status==='Planned'?'<button class="btn btn--danger btn--block" data-act="mRemove">Remove meal</button>':''}<button class="btn btn--primary btn--block" data-act="mSave">Save</button>
+  <button class="btn btn--block" data-act="closeSheet">Cancel</button></div>`);
+}
+function mSave(){
+ const {d,s}=editing, e=S.plan[d][s], prev=e.status;
+ e.status=editing.status;
+ e.stars=(e.status==='Cooked'||e.status==='Eat out')?editing.stars:0;
+  if(e.status!=='Planned') upsertHistory(d,s,e);
+ const key=`${d}-${s}`;
+ forceClose();
+ if(e.status!==prev&&(e.status==='Skipped'||e.status==='Eat out')&&shopFor(key).length){askRemoveShop(key);return;}
+ if(e.status==='Cooked'&&prev!=='Cooked'){const r=rec(e.recipeId); if(r){startCheckoff(r);return;}}
+ toast('Meal updated');
+}
+function upsertHistory(d,s,e){
+ const date=isoDay(weekDate(d));
+ const h=S.history.find(x=>x.date===date&&x.slot===s);
+ if(h){Object.assign(h,{title:e.title,location:e.location||'',status:e.status,stars:e.stars||0});}
+ else{S.history.push({id:uid(),date,slot:s,title:e.title,location:e.location||'',recipeId:e.recipeId||null,status:e.status,stars:e.stars||0});}
+}
+function askRemoveShop(key){
+ const items=shopFor(key);
+ openSheet(`<div class="grip"></div><h2 id="sheetTitle">Remove ${pl(items.length,'item')} for this meal from your shopping list?</h2>
+  <p class="meta" style="font-size:16px">${esc(items.map(i=>i.name).join(', '))}</p>
+  <div class="stack"><button class="btn btn--danger btn--block" data-act="removeMealShop" data-id="${key}">Yes, remove them</button>
+  <button class="btn btn--block" data-act="closeSheet">Keep them</button></div>`,{center:true});
+}
+function removeMealShop(key){
+ S.shop=S.shop.filter(x=>!(x.src===key&&!x.bought));
+ forceClose();
+ toast('Removed from your shopping list');
+}
+function startCheckoff(r){
+ const names=r.ing.map(([n])=>n).filter(inPantry);
+ if(!names.length){toast('Meal marked cooked');return;}
+ checkoff={title:r.name,names,ans:{}};
+ renderCheckoff();
+}
+function renderCheckoff(){
+ const n=checkoff.names, done=n.filter(x=>checkoff.ans[x]).length, complete=done===n.length;
+ openSheet(`<div class="grip"></div><p class="meta">${esc(checkoff.title)} · Cooked</p>
+  <h2 id="sheetTitle">Check what's left in the pantry</h2>
+  <div class="list">${n.map(x=>`<div class="checkrow"><span class="grow">${esc(x)}</span>
+    <div class="seg" style="margin:0;padding:3px;width:auto">
+      <button class="${checkoff.ans[x]==='still'?'on':''}" data-act="co" data-id="${esc(x)}" data-val="still" aria-pressed="${checkoff.ans[x]==='still'}">Still have</button>
+      <button class="${checkoff.ans[x]==='used'?'on':''}" data-act="co" data-id="${esc(x)}" data-val="used" aria-pressed="${checkoff.ans[x]==='used'}">Used up</button>
+    </div></div>`).join('')}</div>
+  <p class="meta" style="margin-bottom:12px">${complete?'All answered. Ready to save.':`Choose Still have or Used up for every ingredient to save. ${done} of ${n.length} answered.`}</p>
+  <div class="stack"><button class="btn btn--primary btn--block" data-act="coSave" ${complete?'':'disabled'}>Save</button></div>`,{lock:true,center:true});
+}
+function coSave(){
+ checkoff.names.forEach(x=>{ if(checkoff.ans[x]==='used') S.pantry=S.pantry.filter(p=>p.name.toLowerCase()!==x.toLowerCase()); });
+ forceClose();
+ toast('Storage updated');
+}
+function openGen(d,s,keepFresh=false){ gen={d,s,effort:S.genEffort,pick:null,keepFresh,mode:'cook',view:'list',dish:'',location:''}; renderGen(); }
+function renderGen(){
+ const used=gen.keepFresh?new Set(S.plan.flatMap(day=>Object.values(day)).filter(Boolean).map(e=>e.recipeId).filter(Boolean)):new Set();
+ const candidates=S.recipes.filter(r=>r.effort===gen.effort&&!used.has(r.id))
+   .map(r=>({r,m:missingOf(r)}))
+   .filter(({r})=>r.name.toLowerCase().includes((gen.q||'').trim().toLowerCase())).sort(cmpRecipe(gen.sort||'az'));
+ const cands=gen.keepFresh?candidates.slice(0,3):candidates;
+ const ready=gen.mode==='cook'?!!gen.pick:!!(gen.dish.trim()&&gen.location.trim());
+ const mealOptions=cands.map(({r,m})=>`<button class="card card--tap ${gen.pick===r.id?'card--sel':''}" data-act="gPick" data-id="${r.id}" aria-pressed="${gen.pick===r.id}" style="display:flex;align-items:center;gap:12px;padding:8px 12px;text-align:left;width:100%;margin-bottom:12px">
+    ${photoEl(r.photo,r.name,'',r.id)}
+    <div class="card-body"><h4 style="margin:0">${esc(r.name)}</h4>
+    <div class="meta">${esc(r.effort)} · ${ratingDisplay(r)}</div>${missingLine(m)}</div></button>`).join('');
+ openSheet(`<div class="grip"></div><p class="meta">${DAYS[gen.d]} · ${gen.s}</p><h2 id="sheetTitle">What are your plans?</h2>
+  <div class="seg" role="group" aria-label="Meal plan type">
+   <button class="${gen.mode==='cook'?'on':''}" data-act="gMode" data-id="cook" aria-pressed="${gen.mode==='cook'}">Cook</button>
+   <button class="${gen.mode==='eatOut'?'on':''}" data-act="gMode" data-id="eatOut" aria-pressed="${gen.mode==='eatOut'}">Eat out</button>
+  </div>
+  ${gen.mode==='cook'?`<h3>Choose your cooking effort</h3>
+   <div class="seg" role="group" aria-label="Effort">${EFFORTS.map(e=>`<button class="${gen.effort===e?'on':''}" data-act="gEffort" data-id="${e}" aria-pressed="${gen.effort===e}">${e}</button>`).join('')}</div>
+   <h2 style="margin:12px 0 12px;font:700 20px/26px var(--display)">Choose your meal</h2>
+   ${recipeSearchRow(gen.q,gen.sort||'az','gq','genSearch','genSort')}
+   ${cands.length?mealOptions
+    :`<div class="empty"><div class="blob">${ic('sparkle')}</div><p>${gen.keepFresh?`No ${esc(gen.effort.toLowerCase())} recipes left to suggest. Try another level.`:`No ${esc(gen.effort.toLowerCase())} recipes available.`}</p></div>`}`
+   :`<label class="lbl" for="genDish">Dish name</label>
+    <input id="genDish" type="text" data-gen="dish" value="${esc(gen.dish)}" placeholder="For example, Chicken Alfredo" autocomplete="off">
+    <label class="lbl" for="genLocation">Location name</label>
+    <input id="genLocation" type="text" data-gen="location" value="${esc(gen.location)}" placeholder="For example, Helene's Garden" autocomplete="off">`}
+  <div class="stack">${gen.mode==='cook'?'':`<button class="btn btn--primary btn--block" id="planMealButton" data-act="gPlan" ${ready?'':'disabled'}>Plan the meal</button>`}
+  <button class="btn btn--block" data-act="closeSheet">Cancel</button></div>`);
+}
+function genInput(t){
+ if(!gen) return;
+ gen[t.dataset.gen]=t.value;
+ const ready=gen.mode==='cook'?!!gen.pick:!!(gen.dish.trim()&&gen.location.trim());
+ const button=$('#planMealButton');
+ if(button) button.disabled=!ready;
+}
+function planGenMeal(){
+ if(gen.mode==='cook'){
+  const r=rec(gen.pick);
+  if(!r) return;
+  S.plan[gen.d][gen.s]={title:r.name,recipeId:r.id,status:'Planned',stars:0,leftovers:false,locked:false}; bkState().meals++;
+  pending={d:gen.d,s:gen.s,recipeId:r.id};
+ }else{
+  const title=gen.dish.trim(), location=gen.location.trim();
+  if(!title||!location) return;
+  S.plan[gen.d][gen.s]={title,location,recipeId:null,status:'Planned',stars:0,leftovers:false,locked:false}; bkState().meals++;
+  forceClose();
+  toast(`${title} added to the plan`);
+  return;
+ }
+ forceClose();
+ promptShop();
+}
+function genRest(){
+ for(let k=0;k<7;k++){
+  const d=(S.day+k)%7;
+  for(const s of SLOTS){ if(!S.plan[d][s]){openGen(d,s,true);return;} }
+ }
+ toast('Every meal this week is already planned');
+}
+
+/* ---------- Shop ---------- */
+function orderedSections(){
+ const present=[...new Set(S.shop.map(x=>x.section))];
+ const order=(S.secOrder||[]).filter(x=>present.includes(x));
+ present.forEach(x=>{ if(!order.includes(x)) order.push(x); });
+ S.secOrder=order; return order;
+}
+const chevSvg=up=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="${up?'18 15 12 9 6 15':'6 9 12 15 18 9'}"/></svg>`;
+function shopView(){
+ const bought=S.shop.filter(x=>x.bought).length;
+ const secs=orderedSections();
+ const query=S.shopQuery.trim().toLowerCase();
+ const catalogMatches=query?INGREDIENT_CATALOG.filter(x=>x.name.toLowerCase().includes(query)):[];
+ const matches=catalogMatches.filter(x=>!onShop(x.name)).sort((a,b)=>Number(!a.name.toLowerCase().startsWith(query))-Number(!b.name.toLowerCase().startsWith(query))).slice(0,8);
+ return `<div class="head"><div><p class="mono muted">${S.shop.length} items · ${bought} purchased</p><h1>Shopping List</h1></div>
+  <div class="toolbar"><button class="btn btn--danger" data-act="removeSheet">${ic('trash')}Remove</button></div></div>
+  <div class="shop-search">
+   <div class="shop-entry">
+    <div class="search-wrap">${ic('search')}<input id="shopInput" type="text" value="${esc(S.shopQuery)}" placeholder="Search or add an item" style="margin:0" autocomplete="off" aria-label="Search or add an item" aria-autocomplete="list" aria-expanded="${!!query}" ${query?'aria-controls="shopSuggestions"':''}>${S.shopQuery?clearBtn('shop'):''}${query?`<div class="ingredient-suggestions" id="shopSuggestions" role="listbox" aria-label="Ingredient matches">
+    ${matches.length?matches.map(x=>`<button class="ingredient-suggestion" role="option" aria-selected="false" aria-label="Add ${esc(x.name)} to shopping list, ${esc(x.section)}" data-act="addIngredient" data-id="${INGREDIENT_CATALOG.indexOf(x)}"><span>${esc(x.name)}</span><span class="ingredient-suggestion-category">${esc(x.section)}</span></button>`).join(''):`<p class="ingredient-suggestion-note">${catalogMatches.length?'All matching ingredients are already on your list.':'No ingredient matches. You can still add this as a custom item.'}</p>`}
+   </div>`:''}</div>
+    <button class="btn btn--primary" data-act="addShop">${ic('plus')}Add</button>
+   </div>
+
+  </div>
+  <h2 style="margin:4px 0 10px">Grocery aisle &amp; section</h2>
+  <div class="shop-grid">${secs.map(sec=>`<section class="shop-sec" aria-label="${esc(sec)}"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px"><h3 style="margin:0">${esc(sec)}</h3><div style="display:flex;gap:6px"><button class="icon-btn" style="width:34px;height:26px;min-height:0;padding:0" data-act="secMove" data-id="${esc(sec)}" data-dir="-1" aria-label="Move ${esc(sec)} up" ${secs.indexOf(sec)===0?'disabled':''}>${chevSvg(true)}</button><button class="icon-btn" style="width:34px;height:26px;min-height:0;padding:0" data-act="secMove" data-id="${esc(sec)}" data-dir="1" aria-label="Move ${esc(sec)} down" ${secs.indexOf(sec)===secs.length-1?'disabled':''}>${chevSvg(false)}</button></div></div><div class="chips">${S.shop.filter(x=>x.section===sec).map(x=>
+    `<button class="chip ${x.bought?'chip--purchased':''} ${pendingChip&&pendingChip.id===x.id?(pendingChip.bought?'chip--pop':'chip--undo'):''}" data-act="buy" data-id="${x.id}" aria-pressed="${x.bought}">${x.bought?ic('check'):''}${esc(x.name)}</button>`).join('')}</div></section>`).join('')}</div>
+  ${S.shop.length?'':`<div class="empty"><div class="blob blob--sky">${ic('bag')}</div><p>Your list is empty. Add something tasty.</p></div>`}
+  <div class="stack"><button class="btn btn--primary btn--block" data-act="doneSheet">${ic('cartsvg')}Done shopping</button></div>`;
+}
+function categorySheet(name){
+ const cats=[...new Set([...INGREDIENT_CATALOG.map(x=>x.section),...S.shop.map(x=>x.section)])].filter(c=>c!=='Other').sort();
+ cats.push('Other');
+ openSheet(`<div class="grip"></div><h2 id="sheetTitle">Add ${esc(name)}</h2>
+  <p class="meta">Which section does this belong in?</p>
+  <label class="lbl" for="catSel">Category</label>
+  <select class="sort-select" id="catSel" style="width:100%">${cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}</select>
+  <div class="stack"><button class="btn btn--primary btn--block" data-act="catConfirm" data-name="${esc(name)}">Add to list</button>
+  <button class="btn btn--block" data-act="closeSheet">Cancel</button></div>`);
+}
+function addShop(name){
+ const inp=$('#shopInput'), value=(name||(inp?inp.value:'')).trim();
+ if(!value) return;
+ const ingredient=INGREDIENT_CATALOG.find(x=>x.name.toLowerCase()===value.toLowerCase());
+ const n=ingredient?ingredient.name:value;
+ if(onShop(n)){toast('Already on your list',true);return;}
+ if(!ingredient && !SECTION[n]){ categorySheet(n); return; }
+ S.shop.push({id:uid(),name:n,section:ingredient?ingredient.section:sectionFor(n),bought:false,src:''});
+ S.shopQuery='';
+ toast(`${n} added to shopping list`);
+}
+function removeSheet(){
+ openSheet(`<div class="grip"></div><h2 id="sheetTitle">Remove from list</h2><p class="meta">Tap the trash icon to take one item off the list.</p>
+  <div class="list" style="margin-top:12px">${S.shop.length?S.shop.map(x=>`<div class="checkrow ${x.bought?'checkrow--line':''}">
+    <span class="grow">${esc(x.name)}</span>
+    <button class="icon-btn icon-btn--danger" style="width:40px;height:40px" data-act="removeShop" data-id="${x.id}" aria-label="Remove ${esc(x.name)}">${ic('trash')}</button></div>`).join(''):'<p class="meta" style="padding:14px">Nothing to remove.</p>'}</div>
+  <div class="stack"><button class="btn btn--danger btn--block" data-act="removeAll" ${S.shop.length?'':'disabled'}>Remove all ${S.shop.length} items</button>
+  <button class="btn btn--block" data-act="closeSheet">Cancel</button></div>`,{center:true});
+}
+function destFor(x){return CAT_LOC[x.section]||'Storage';}
+function doneSheet(){
+ const buy=S.shop.filter(x=>x.bought), stay=S.shop.filter(x=>!x.bought);
+ openSheet(`<div class="grip"></div><h2 id="sheetTitle">Done shopping?</h2>
+  <p class="meta" style="margin-bottom:12px">Purchased items move to where they're stored. Tap a location to change it. Items you didn't buy stay on your list.</p>
+  ${buy.length?`<p class="lbl">Moving · ${buy.length}</p><div class="list">${buy.map(x=>`<div class="checkrow">
+     <span class="grow">${esc(x.name)}</span>
+     <div class="select-wrap"><select data-dest="${x.id}" aria-label="Location for ${esc(x.name)}">${LOCS.map(l=>`<option value="${l}" ${l===destFor(x)?'selected':''}>${l==='Storage'?'Pantry':l}</option>`).join('')}</select>${ic('chev-down')}</div>
+     </div>`).join('')}</div>`:'<div class="notice">Nothing purchased yet. Tap items to mark them purchased.</div>'}
+  ${stay.length?`<p class="lbl">Staying on your list · ${stay.length}</p><div class="chips">${stay.map(x=>`<span class="chip" style="background:var(--stone)">${esc(x.name)}</span>`).join('')}</div>`:''}
+  <div class="stack"><button class="btn btn--primary btn--block" data-act="confirmDone" ${buy.length?'':'disabled'}>Yes, I'm done</button>
+  <button class="btn btn--block" data-act="closeSheet">Go back to list</button></div>`);
+}
+function confirmDone(){
+ let moved=0;
+ document.querySelectorAll('[data-dest]').forEach(sel=>{
+  const x=S.shop.find(i=>i.id===sel.dataset.dest); if(!x) return;
+  const p=S.pantry.find(q=>q.name.toLowerCase()===x.name.toLowerCase());
+  if(p){p.loc=sel.value;} else {S.pantry.push({id:uid(),name:x.name,loc:sel.value,expiry:'',store:''});}
+  moved++;
+ });
+ S.shop=S.shop.filter(x=>!x.bought);
+ forceClose();
+ toast(`Moved ${pl(moved,'item')} to Storage`);
+}
+
+/* ---------- History ---------- */
+function inPeriod(h){
+ if(S.hperiod==='Week') return h.date>=isoDay(WEEK_START)&&h.date<=isoDay(weekDate(6));
+ if(S.hperiod==='Month') return h.date.startsWith('2026-11');
+ if(S.hperiod==='Year') return h.date.startsWith('2026');
+ return true;
+}
+function historyHTML(){
+ const base=S.history.filter(inPeriod);
+ const count=f=>f==='All'?base.length:base.filter(h=>h.status===f).length;
+ const list=base.filter(h=>S.hfilter==='All'||h.status===S.hfilter).sort((a,b)=>b.date.localeCompare(a.date));
+ const range={Week:weekRangeLabel(),Month:'November 2026',Year:'2026','All time':'All time'}[S.hperiod];
+ const dates=[...new Set(list.map(h=>h.date))];
+ return `<div class="grip"></div><p class="meta">${range}</p><h2 id="sheetTitle">History</h2>
+  <div class="seg" role="group" aria-label="History period" style="max-width:760px">${PERIODS.map(p=>`<button class="${S.hperiod===p?'on':''}" data-act="hperiod" data-id="${p}" aria-pressed="${S.hperiod===p}">${p}</button>`).join('')}</div>
+  <div class="chip-scroll" role="group" aria-label="Filter by status">${['All','Cooked','Eat out','Skipped'].map(f=>`<button class="chip chip--effort ${S.hfilter===f?'chip--on':''}" data-act="hfilter" data-id="${f}" aria-pressed="${S.hfilter===f}">${f} <span class="mono">${count(f)}</span></button>`).join('')}</div>
+  <div class="history-list">${dates.map(dt=>`<h3>${new Date(dt+'T00:00:00').toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})}</h3>
+    ${list.filter(h=>h.date===dt).map(h=>`<button class="card card--tap" data-act="hEdit" data-id="${h.id}">
+      ${thumbFor(h.recipeId,h.title,'')}
+      <div class="card-body"><p class="slot-label">${esc(h.slot)}</p><h4 style="margin-top:2px">${esc(h.title)}</h4>
+      <div style="margin-top:6px;display:flex;align-items:center;flex-wrap:wrap;gap:4px">${pillFor(h.status)}${h.stars&&h.status!=='Skipped'?`<span class="stars-inline" aria-label="${h.stars} of 5 stars">${stars(h.stars)}</span>`:''}</div>${h.location?`<p class="meta">${esc(h.location)}</p>`:''}</div></button>`).join('')}`).join('')
+  || `<div class="empty"><div class="blob blob--lav">${ic('history')}</div><p>No meals in this period yet.</p></div>`}</div>`;
+}
+function historySheet(){ S.histOpen=true; openSheet(historyHTML()); }
+function histEdit(id){
+ const h=S.history.find(x=>x.id===id); if(!h) return; S.histOpen=false;
+ histEditState={...h};
+ histEditRender();
+}
+function histEditRender(){
+ const h=histEditState, showStars=h.status==='Cooked'||h.status==='Eat out';
+ openSheet(`<div class="grip"></div><p class="meta">${esc(h.date)} · ${esc(h.slot)}</p><h2 id="sheetTitle">${esc(h.title)}</h2>
+  <p class="lbl">How did it go?</p>
+  <div class="seg" role="group" aria-label="Status">${STATUSES.map(st=>`<button class="${h.status===st?'on':''}" data-act="hStatus" data-id="${st}" aria-pressed="${h.status===st}">${st}</button>`).join('')}</div>
+  ${showStars?`<p class="lbl">Worth cooking again?</p><div class="stars" role="group" aria-label="Rating">${[1,2,3,4,5].map(n=>`<button class="${n<=h.stars?'on':''}" aria-label="${n} stars" data-act="hStars" data-id="${n}">${ic('star')}</button>`).join('')}</div>`:''}
+  <div class="stack"><button class="btn btn--primary btn--block" data-act="hSave">Save</button>
+  <button class="btn btn--block" data-act="closeSheet">Cancel</button></div>`);
+}
+function hSave(){
+ const h=S.history.find(x=>x.id===histEditState.id);
+ if(h) Object.assign(h,{status:histEditState.status,stars:histEditState.stars||0});
+ forceClose();
+ toast('History updated');
+}
+function dataSheet(){
+ openSheet(`<div class="grip"></div><h2 id="sheetTitle">Settings</h2>
+  <h3 style="margin-bottom:8px">Backup</h3>
+  <p class="meta" style="margin-bottom:12px">Last backup: ${bkLastText()}<br>Changes since last backup: ${bkChanges()}</p>
+  <div class="stack" style="margin-top:0">
+   <button class="btn btn--block" style="background:var(--sky)" data-act="exportBackup">${ic('download')}Export backup</button>
+   <button class="btn btn--block" data-act="importMerge">${ic('upload')}Import and merge with what's here</button>
+   <button class="btn btn--block" data-act="importReplace">${ic('upload')}Import and replace everything</button></div>
+  <h3 style="margin-bottom:8px">Week</h3>
+  <p class="meta" style="margin-bottom:8px">Week starts on</p>
+  <div class="seg" role="group" aria-label="Week starts on">${[['0','Sunday'],['1','Monday']].map(([v,l])=>`<button class="${String(S.weekStart||0)===v?'on':''}" data-act="weekStart" data-id="${v}" aria-pressed="${String(S.weekStart||0)===v}">${l}</button>`).join('')}</div>
+  <h3>Help</h3>
+  <div class="stack" style="margin-top:0"><button class="btn btn--block" style="background:var(--lavender)" data-act="tourReplay">${ic('sparkle')}Take the tour</button></div>
+  <h3>Clear data</h3>
+  <div class="list">
+   <label class="checkrow"><input type="checkbox" name="clr" value="history"> <span class="grow">Past meals (history)</span></label>
+   <label class="checkrow"><input type="checkbox" name="clr" value="recipes"> <span class="grow">Recipe library</span></label>
+   <label class="checkrow"><input type="checkbox" name="clr" value="pantry"> <span class="grow">Storage items</span></label></div>
+  <div class="stack" style="margin-top:0">
+   <button class="btn btn--danger btn--block" data-act="clearSelected">Clear selected</button>
+   <button class="btn btn--danger btn--block" data-act="clearAllSheet">Clear everything</button></div>
+  <div class="stack"><button class="btn btn--block" data-act="closeSheet">Close</button></div>`);
+}
+async function exportBackup(){
+ const data={version:1,exportedAt:new Date().toISOString(),pantry:S.pantry,recipes:S.recipes,plan:S.plan,shop:S.shop,history:S.history,photos:await photosForBackup()};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob); a.download=`one-munch-plan-backup-${isoDay(new Date())}.json`;
+ document.body.appendChild(a); a.click(); a.remove();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+ toast('Backup file created');
+}
+function importFile(input){
+ const f=input.files[0]; if(!f) return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  let data;
+  try{data=JSON.parse(reader.result);}catch(err){toast('That file could not be read.',true);return;}
+  if(!data||!Array.isArray(data.pantry)||!Array.isArray(data.shop)||!Array.isArray(data.history)){toast('That is not a valid backup.',true);return;}
+  if(S.mergeMode==='replace'){
+   S.pantry=data.pantry; S.recipes=data.recipes||S.recipes; S.plan=data.plan||S.plan; S.shop=data.shop; S.history=data.history;
+  }else{
+   S.pantry.push(...data.pantry.filter(p=>!S.pantry.some(q=>q.id===p.id||q.name.toLowerCase()===p.name.toLowerCase())));
+   (data.recipes||[]).forEach(r=>{if(!S.recipes.some(x=>x.id===r.id)) S.recipes.push(r);});
+   S.shop.push(...data.shop.filter(x=>!S.shop.some(y=>y.id===x.id)));
+   S.history.push(...data.history.filter(h=>!S.history.some(y=>y.id===h.id)));
+   if(Array.isArray(data.plan)) data.plan.forEach((day,i)=>{ if(!S.plan[i]) return; SLOTS.forEach(s=>{ if(!S.plan[i][s]&&day&&day[s]) S.plan[i][s]=day[s]; }); });
+  }
+  forceClose();
+  toast('Backup imported');
+  restorePhotos(data.photos||{}).then(render);
+  render();
+ };
+ reader.readAsText(f);
+ input.value='';
+}
+function clearSheet(what){
+ const label=what.split(',').join(' and ');
+ openSheet(`<div class="grip"></div><h2 id="sheetTitle">Clear ${esc(label)}?</h2>
+  <p class="meta">This removes ${esc(label)} from this device. It can't be undone unless you have a backup.</p>
+  <div class="stack"><button class="btn btn--danger btn--block" data-act="doClear" data-id="${what}">Clear ${esc(label)}</button>
+  <button class="btn btn--block" data-act="dataSheet">Cancel</button></div>`,{center:true});
+}
+function doClear(what){
+ what.split(',').forEach(w=>{
+  if(w==='history') S.history=[];
+  if(w==='recipes'){S.recipes.forEach(r=>photoDel(r.photo));S.recipes=[];S.open=null;}
+  if(w==='pantry'){S.pantry.forEach(p=>photoDel(p.photo));S.pantry=[];}
+ });
+ forceClose();
+ toast(`Cleared ${what.split(',').join(' and ')}`);
+}
+function clearAllSheet(){
+ openSheet(`<div class="grip"></div><h2 id="sheetTitle">Clear everything?</h2>
+  <p class="meta" style="margin-bottom:12px">This removes all recipes, storage items, meal history, and your shopping list from this device. It can't be undone unless you have a backup.</p>
+  <label class="lbl" for="clearWord">Type DELETE to confirm</label>
+  <input id="clearWord" type="text" autocomplete="off" style="margin-bottom:4px">
+  <div class="stack"><button class="btn btn--danger btn--block" id="clearGo" data-act="doClearAll" disabled>Clear everything</button>
+  <button class="btn btn--block" data-act="dataSheet">Cancel</button></div>`,{center:true});
+}
+function doClearAll(){
+ [...S.recipes,...S.pantry].forEach(x=>photoDel(x.photo));
+ S.history=[]; S.recipes=[]; S.pantry=[]; S.shop=[]; S.plan=emptyPlan(); S.open=null;
+ forceClose();
+ toast('All data cleared');
+}
+
+let stateLoaded=false;
+let saveTimer=null;
+function saveState(){
+ if(!stateLoaded) return;
+ clearTimeout(saveTimer);
+ saveTimer=setTimeout(()=>{
+  const snap={pantry:S.pantry,recipes:S.recipes,plan:S.plan,shop:S.shop,history:S.history,weekStart:S.weekStart||0,bk:S.bk||null};
+  idbTx('app','readwrite',s=>s.put(JSON.parse(JSON.stringify(snap)),'state')).catch(()=>{});
+ },300);
+}
+async function idbTx(store,mode,fn){
+ const db=await photoDb();
+ return new Promise((res,rej)=>{
+  const tx=db.transaction(store,mode);
+  const req=fn(tx.objectStore(store));
+  tx.oncomplete=()=>res(req?req.result:undefined);
+  tx.onerror=()=>rej(tx.error);
+ });
+}
+async function loadState(){
+ const saved=await idbTx('app','readonly',s=>s.get('state'));
+ if(saved){ S.pantry=saved.pantry||[]; S.recipes=saved.recipes||[]; S.plan=saved.plan||S.plan; S.shop=saved.shop||[]; S.history=saved.history||[]; S.weekStart=saved.weekStart||0; S.bk=saved.bk||null; }
+}
+function loadBoot(){
+ loadState()
+  .catch(()=>{})
+  .then(()=>{stateLoaded=true;})
+  .then(()=>loadPhotos().catch(()=>{}))
+  .then(()=>{
+   const refs=new Set([...S.recipes.map(r=>r.photo),...S.pantry.map(p=>p.photo)].filter(Boolean));
+   Object.keys(PHOTO_URL).forEach(id=>{ if(!refs.has(id)) photoDel(id); });
+  })
+  .then(()=>render())
+  .then(()=>{ if(!onboardingDismissed()) tourStart(); })
+  .then(()=>checkVersion());
+}
+setInterval(checkVersion,3600000);
+const PHOTO_URL={};
+let PHOTO_DB=null;
+function photoDb(){
+ if(PHOTO_DB) return Promise.resolve(PHOTO_DB);
+ return new Promise((res,rej)=>{
+  const r=indexedDB.open('one-munch-plan',2);
+  r.onupgradeneeded=()=>{const db=r.result; if(!db.objectStoreNames.contains('photos')) db.createObjectStore('photos'); if(!db.objectStoreNames.contains('app')) db.createObjectStore('app');};
+  r.onsuccess=()=>{PHOTO_DB=r.result; res(PHOTO_DB);};
+  r.onerror=()=>rej(r.error);
+ });
+}
+async function photoTx(mode,fn){
+ const db=await photoDb();
+ return new Promise((res,rej)=>{
+  const tx=db.transaction('photos',mode);
+  const req=fn(tx.objectStore('photos'));
+  tx.oncomplete=()=>res(req?req.result:undefined);
+  tx.onerror=()=>rej(tx.error);
+ });
+}
+async function photoPut(id,blob){ await photoTx('readwrite',s=>s.put(blob,id)); }
+async function photoGetBlob(id){ return photoTx('readonly',s=>s.get(id)); }
+function photoDel(id){
+ if(!id) return;
+ if(PHOTO_URL[id]){ URL.revokeObjectURL(PHOTO_URL[id]); delete PHOTO_URL[id]; }
+ photoTx('readwrite',s=>s.delete(id)).catch(()=>{});
+}
+async function loadPhotos(){
+ const db=await photoDb();
+ return new Promise((res,rej)=>{
+  const tx=db.transaction('photos','readonly');
+  const req=tx.objectStore('photos').openCursor();
+  req.onsuccess=()=>{const c=req.result; if(c){PHOTO_URL[c.key]=URL.createObjectURL(c.value); c.continue();}};
+  tx.oncomplete=()=>res();
+  tx.onerror=()=>rej(tx.error);
+ });
+}
+function blobToDataURL(blob){
+ return new Promise((res,rej)=>{const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(blob);});
+}
+async function photosForBackup(){
+ const ids=[...S.recipes.map(r=>r.photo),...S.pantry.map(p=>p.photo)].filter(Boolean);
+ const out={};
+ for(const id of ids){ const b=await photoGetBlob(id); if(b) out[id]=await blobToDataURL(b); }
+ return out;
+}
+async function restorePhotos(map){
+ for(const [id,url] of Object.entries(map||{})){
+  const blob=await (await fetch(url)).blob();
+  await photoPut(id,blob);
+  PHOTO_URL[id]=URL.createObjectURL(blob);
+ }
+}
+async function compressPhoto(file,ratio){
+ const bmp=await createImageBitmap(file);
+ let cw=bmp.width, ch=bmp.height;
+ if(cw/ch>ratio){ cw=ch*ratio; } else { ch=cw/ratio; }
+ const sx=(bmp.width-cw)/2, sy=(bmp.height-ch)/2;
+ const w=Math.min(1200,Math.round(cw)), h=Math.round(w/ratio);
+ const c=document.createElement('canvas'); c.width=w; c.height=h;
+ c.getContext('2d').drawImage(bmp,sx,sy,cw,ch,0,0,w,h);
+ if(bmp.close) bmp.close();
+ let blob=await new Promise(r=>c.toBlob(r,'image/webp',0.8));
+ if(!blob||blob.type!=='image/webp') blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.8));
+ return blob;
+}
+function pickPhoto(kind){
+ const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
+ inp.onchange=()=>handlePhoto(kind,inp.files[0]);
+ inp.click();
+}
+async function handlePhoto(kind,file){
+ if(!file) return;
+ toast('Processing photo…');
+ try{
+  const blob=await compressPhoto(file, kind==='recipe'?4/3:1);
+  const id='p'+uid();
+  await photoPut(id,blob);
+  PHOTO_URL[id]=URL.createObjectURL(blob);
+  if(kind==='recipe'){ if(S.rform){ S.rform.photo=id; render(); } }
+  else { const h=$('#fPhoto'); if(h){ h.value=id; $('#photoBlock-item').outerHTML=photoBlock('item',id,$('#fName').value||'item'); } }
+ }catch(e){ toast('That photo could not be processed.',true); }
+}
+function removePhoto(kind){
+ if(kind==='recipe'){ if(S.rform){ S.rform.photo=null; render(); } }
+ else { const h=$('#fPhoto'); if(h){ h.value=''; $('#photoBlock-item').outerHTML=photoBlock('item','',$('#fName').value||'item'); } }
+}
+function photoBlock(kind,pid,alt){
+ const tile=pid&&PHOTO_URL[pid]?`<img src="${PHOTO_URL[pid]}" alt="${esc(alt)}" style="width:100%;height:100%;object-fit:cover;display:block">`:`<div style="display:grid;justify-items:center;gap:6px;font:700 14px var(--sans);color:var(--ink)">${ic('photo')}<span>Add a photo</span></div>`;
+ return `<div id="photoBlock-${kind}" style="margin-bottom:12px"><p class="lbl">Photo</p>
+  <div class="photo-tile ${kind}-tile" style="aspect-ratio:${kind==='item'?'1/1':'4/3'};border:var(--border);border-radius:var(--radius);overflow:hidden;background:var(--lavender);display:grid;place-items:center">${tile}</div>
+  <div class="stack ${kind}-tile" style="margin-top:8px"><button class="btn btn--block" data-act="pickPhoto" data-id="${kind}">${pid?'Replace photo':'Choose photo'}</button>${pid?`<button class="btn btn--block" data-act="removePhoto" data-id="${kind}">Remove photo</button>`:''}</div></div>`;
+}
+function noImage(c){
+ return `<div class="img ${c}" role="img" aria-label="No image found" style="background:var(--white);display:grid;place-items:center;text-align:center;padding:4px"><span style="font:700 12px/1.2 var(--sans);color:var(--ink)">No image found</span></div>`;
+}
+function photoEl(photoId,alt,c,seed){
+ if(photoId&&PHOTO_URL[photoId]) return `<div class="img ${c}" style="background:none;overflow:hidden"><img src="${PHOTO_URL[photoId]}" alt="${esc(alt)}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`;
+ return img(seed||alt,c);
+}
+function thumbFor(recipeId,title,c){
+ if(!recipeId) return img(title,c);
+ const r=rec(recipeId);
+ if(!r) return noImage(c);
+ return photoEl(r.photo,r.name,c,r.id);
+}
+function rfSuggHTML(i){
+ const q=(S.rform.ing[i].n||'').trim().toLowerCase();
+ if(!q) return '';
+ const matches=INGREDIENT_CATALOG.filter(x=>x.name.toLowerCase().includes(q)).slice(0,6);
+ if(!matches.length) return '';
+ return `<div class="ingredient-suggestions" role="listbox" aria-label="Ingredient matches">${matches.map(x=>`<button class="ingredient-suggestion" role="option" aria-selected="false" data-act="rfPickIng" data-i="${i}" data-id="${INGREDIENT_CATALOG.indexOf(x)}"><span>${esc(x.name)}</span><span class="ingredient-suggestion-category">${esc(x.section)}</span></button>`).join('')}</div>`;
+}
+function rfBlank(){return {mode:'new',id:null,name:'',effort:'Quick',ing:[{n:'',a:''}],steps:['']};}
+function rfFrom(r){return {mode:'edit',id:r.id,name:r.name,effort:r.effort||'Quick',ing:r.ing.map(([n,a])=>({n,a:a||''})),steps:r.steps.slice(),photo:r.photo||null};}
+function rfValid(f){return f.name.trim()!==''&&f.ing.some(x=>x.n.trim()!=='')&&f.steps.some(s=>s.trim()!=='');}
+function rfSaveState(){const b=$('#rfSave'); if(b) b.disabled=!rfValid(S.rform);}
+function rfInput(t){
+ const f=S.rform; if(!f) return;
+ const k=t.dataset.rf, i=+t.dataset.i;
+ if(k==='name') f.name=t.value;
+ else if(k==='ing'){ f.ing[i][t.dataset.k]=t.value; if(t.dataset.k==='n'){ const c=document.getElementById('rfSugg-'+i); if(c) c.innerHTML=rfSuggHTML(i); } }
+ else if(k==='step') f.steps[i]=t.value;
+ rfSaveState();
+}
+function recipeFormView(){
+ const f=S.rform, isEdit=f.mode==='edit', valid=rfValid(f);
+ const ingRows=f.ing.map((x,i)=>`<div style="display:grid;grid-template-columns:2fr 1fr 44px;gap:8px;margin-bottom:8px"><div class="rf-ing" style="position:relative"><input type="text" data-rf="ing" data-k="n" data-i="${i}" value="${esc(x.n)}" placeholder="Ingredient" aria-label="Ingredient ${i+1} name" autocomplete="off"><div id="rfSugg-${i}"></div></div><input type="text" data-rf="ing" data-k="a" data-i="${i}" value="${esc(x.a)}" placeholder="Amount" aria-label="Ingredient ${i+1} amount"><button class="icon-btn icon-btn--danger" data-act="rfDelIng" data-i="${i}" aria-label="Remove ingredient ${i+1}">${ic('trash')}</button></div>`).join('');
+ const stepRows=f.steps.map((s,i)=>`<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px"><span class="ob-num" style="margin-top:8px">${i+1}</span><textarea data-rf="step" data-i="${i}" aria-label="Step ${i+1}" style="flex:1;min-height:72px;padding:10px 12px;border:var(--border);border-radius:var(--radius-sm);background:var(--white);font:400 15px/21px var(--sans);color:var(--ink)">${esc(s)}</textarea><button class="icon-btn icon-btn--danger" data-act="rfDelStep" data-i="${i}" aria-label="Remove step ${i+1}">${ic('trash')}</button></div>`).join('');
+ const effort=['Quick','Moderate','Extensive'].map(e=>`<button class="${f.effort===e?'on':''}" data-act="rfEffort" data-id="${e}" aria-pressed="${f.effort===e}">${e}</button>`).join('');
+ return `<div class="rform"><div class="head"><div><p class="mono muted">Recipes</p><h1>${isEdit?'Edit recipe':'New recipe'}</h1></div></div>
+  <label class="lbl" for="rfName">Name <span style="color:#A32D2D">*</span></label>
+  <input id="rfName" type="text" data-rf="name" value="${esc(f.name)}" placeholder="Name of the recipe">
+  ${photoBlock('recipe', f.photo, f.name)}
+  <p class="lbl">Effort</p>
+  <div class="seg" role="group" aria-label="Effort">${effort}</div>
+  <p class="lbl">Ingredients <span style="color:#A32D2D">*</span></p>
+  ${ingRows}
+  <button class="btn btn--block" style="white-space:normal;text-align:center" data-act="rfAddIng">${ic('plus')}<span style="display:grid;justify-items:center">Add ingredient<span class="muted" style="font-size:13px;line-height:18px">(does not add to shopping list)</span></span></button>
+  <p class="lbl">Steps <span style="color:#A32D2D">*</span></p>
+  ${stepRows}
+  <button class="btn btn--block" data-act="rfAddStep">${ic('plus')}Add step</button>
+  <p class="muted" style="margin-top:12px">Required: name, at least one ingredient, and at least one step.</p>
+  <div class="stack">
+   <button class="btn btn--primary btn--block" id="rfSave" data-act="rfSave" ${valid?'':'disabled'}>Save recipe</button>
+   ${isEdit?'<button class="btn btn--danger btn--block" data-act="rfDelete">Delete recipe</button>':''}
+   <button class="btn btn--block" data-act="rfCancel">Cancel</button>
+  </div>
+  </div>`;
+}
+function rfSave(){
+ const f=S.rform; if(!rfValid(f)) return;
+ const ing=f.ing.filter(x=>x.n.trim()!=='').map(x=>[x.n.trim(), x.a.trim()]);
+ const steps=f.steps.map(s=>s.trim()).filter(Boolean);
+ const old=f.mode==='edit'?rec(f.id):null;
+ const r={id:f.id||('r'+uid()), name:f.name.trim(), effort:f.effort, yield:2, rating:old?old.rating:0, ing, steps, photo:f.photo||null};
+ if(old&&old.photo&&old.photo!==f.photo) photoDel(old.photo);
+ if(old){ const i=S.recipes.findIndex(x=>x.id===r.id); S.recipes[i]=r; } else { S.recipes.push(r); bkState().recipes++; }
+ S.open=r.id; S.rform=null;
+ toast(old?'Recipe updated':'Recipe saved');
+}
+function rfConfirmDelete(){
+ openSheet(`<div class="grip"></div><h2 id="sheetTitle">Delete this recipe?</h2>
+  <p class="meta" style="margin-bottom:12px">Once deleted, planned meals with this recipe will be removed from your plan as well. Past meals in History stay.</p>
+  <div class="stack"><button class="btn btn--danger btn--block" data-act="rfDeleteGo">Delete recipe</button>
+  <button class="btn btn--block" data-act="closeSheet">Cancel</button></div>`,{center:true});
+}
+function rfDeleteGo(){
+ const id=S.rform.id; photoDel((rec(id)||{}).photo);
+ S.recipes=S.recipes.filter(r=>r.id!==id);
+ S.plan.forEach(day=>SLOTS.forEach(s=>{const e=day[s]; if(e&&e.recipeId===id&&e.status==='Planned') day[s]=null;}));
+ S.open=null; S.rform=null;
+ forceClose();
+ toast('Recipe deleted');
+}
+
+/* ---------- actions ---------- */
+function act(a,d,el){
+ switch(a){
+  case 'tab': S.tab=d.id; S.open=null; S.rform=null; if(d.id==='plan') S.day=todayIdx(); break;
+  case 'loc': S.loc=d.id; break;
+  case 'newItem': openSheet(itemSheet({name:d.name||(($('#pantrySearch')||{}).value||'').trim(),loc:S.loc,expiry:'',store:''},true)); break;
+  case 'editItem': openSheet(itemSheet(S.pantry.find(x=>x.id===d.id),false)); break;
+  case 'fLoc': $('#fLoc').value=d.id; document.querySelectorAll('#fLocSeg button').forEach(b=>{b.classList.toggle('on',b===el); b.setAttribute('aria-pressed',b===el);}); break;
+  case 'saveItem': saveItem(d.id); break;
+  case 'toShop': {
+   const p=S.pantry.find(x=>x.id===d.id);
+   if(onShop(p.name)) toast('Already on your list',true);
+   else {S.shop.push({id:uid(),name:p.name,section:sectionFor(p.name),bought:false,src:''}); toast(`${p.name} added to shop list`);}
+   break;}
+  case 'removePantry': photoDel((S.pantry.find(x=>x.id===d.id)||{}).photo); S.pantry=S.pantry.filter(x=>x.id!==d.id); toast('Removed from storage'); break;
+  case 'soon': toast(d.id); break;
+  case 'rfPickIng': if(S.rform){ S.rform.ing[+d.i].n=INGREDIENT_CATALOG[+d.id].name; render(); } break;
+  case 'pickStorageIng': { const x=INGREDIENT_CATALOG[+d.id]; S.q=''; openSheet(itemSheet({name:x.name,loc:S.loc,expiry:'',store:''},true)); break; }
+  case 'clearSearch': if(d.id==='q') S.q=''; else S.shopQuery=''; break;
+  case 'rview': S.rview=d.id; break;
+  case 'recipeSheet': recipeSheet(d.id); break;
+  case 'tourNext': tourStep=Math.min(tourStep+1,TOUR.length-1); renderTour(); break;
+  case 'tourBack': tourStep=Math.max(tourStep-1,0); renderTour(); break;
+  case 'tourSkip': case 'tourFinish': tourFinish(); break;
+  case 'tourReplay': forceClose(); tourStart(); break;
+  case 'updBackup': exportBackup().then(()=>{ markBackup(); setTimeout(()=>location.reload(),800); }); break;
+  case 'updRefresh': setTimeout(()=>location.reload(),400); break;
+  case 'updDismiss': updateDismissed=true; break;
+  case 'pickPhoto': pickPhoto(d.id); break;
+  case 'removePhoto': removePhoto(d.id); break;
+  case 'rfNew': S.rform=rfBlank(); break;
+  case 'rfEdit': S.rform=rfFrom(rec(d.id)); break;
+  case 'rfEffort': S.rform.effort=d.id; break;
+  case 'rfAddIng': S.rform.ing.push({n:'',a:''}); break;
+  case 'rfDelIng': if(S.rform.ing.length>1) S.rform.ing.splice(+d.i,1); else S.rform.ing=[{n:'',a:''}]; break;
+  case 'rfAddStep': S.rform.steps.push(''); break;
+  case 'rfDelStep': if(S.rform.steps.length>1) S.rform.steps.splice(+d.i,1); else S.rform.steps=['']; break;
+  case 'rfSave': rfSave(); break;
+  case 'rfCancel': { const id=S.rform&&S.rform.mode==='edit'?S.rform.id:null; S.rform=null; S.open=id; break; }
+  case 'rfDelete': rfConfirmDelete(); break;
+  case 'rfDeleteGo': rfDeleteGo(); break;
+  case 'dismissOnboarding': try{localStorage.setItem('mp_onboarded','1'); localStorage.setItem('mp_onboarded_at',String(Date.now()));}catch(e){} setTimeout(()=>{ if(S.tab==='home'&&!S.open) render(); }, 60100); break;
+  case 'viewToday': S.day=todayIdx(); S.tab='plan'; S.open=null; break;
+  case 'weekStart': changeWeekStart(+d.id); dataSheet(); break;
+  case 'useItUp': S.open=d.id; pick={d:Math.max(todayIdx(),0),s:'Dinner'}; pickSheet(); break;
+  case 'pwaLater': try{const u=new Date(); u.setDate(u.getDate()+3); localStorage.setItem(PWA_KEY,JSON.stringify({status:'later',until:isoDay(u)}));}catch(e){} break;
+  case 'pwaAdded': try{localStorage.setItem(PWA_KEY,JSON.stringify({status:'added'}));}catch(e){} break;
+  case 'dismissExpiry': try{localStorage.setItem('mp_expiry_dismissed',isoDay(new Date()));}catch(e){} break;
+  case 'rfilter': S.rfilter=d.id; break;
+  case 'openRecipe': S.open=d.id; break;
+  case 'back': S.open=null; break;
+  case 'servings': S.servings=S.servings%6+1; break;
+  case 'shopMissing': {
+   const r=rec(S.open), miss=missingOf(r).filter(n=>!onShop(n));
+   miss.forEach(n=>S.shop.push({id:uid(),name:n,section:sectionFor(n),bought:false,src:''}));
+   toast(miss.length?`Added ${pl(miss.length,'item')} to your shop list`:'Those items are already on your list');
+   break;}
+  case 'pickMeal': pick={d:S.day,s:'Dinner'}; pickSheet(); break;
+  case 'pickDay': pick.d=+d.id; pickSheet(); break;
+  case 'pickSlot': pick.s=d.id; pickSheet(); break;
+  case 'confirmPick': confirmPick(); break;
+  case 'day': S.day=+d.id; break;
+  case 'refresh': case 'genSlot': openGen(+d.day,d.slot); break;
+  case 'genRest': genRest(); break;
+  case 'mealSheet': mealSheet(+d.day,d.slot); break;
+  case 'mStatus': editing.status=d.id; renderMealSheet(); break;
+  case 'mStars': editing.stars=+d.id; renderMealSheet(); break;
+  case 'mRemove': S.plan[editing.d][editing.s]=null; forceClose(); toast('Meal removed'); break;
+  case 'mSave': mSave(); break;
+  case 'gMode': gen.mode=d.id; renderGen(); break;
+  case 'gEffort': gen.effort=d.id; S.genEffort=d.id; gen.pick=null; renderGen(); break;
+  case 'gView': gen.view=d.id; renderGen(); break;
+  case 'gPick': gen.pick=d.id; if(gen.mode==='cook'){ planGenMeal(); } else { renderGen(); } break;
+  case 'gPlan': planGenMeal(); break;
+  case 'addMissing': addMissing(); break;
+  case 'removeMealShop': removeMealShop(d.id); break;
+  case 'addShop': addShop(); break;
+  case 'catConfirm': { const sel=$('#catSel'); const sec=sel?sel.value:'Other'; const n=d.name; if(!onShop(n)) S.shop.push({id:uid(),name:n,section:sec,bought:false,src:''}); S.shopQuery=''; forceClose(); toast(`${n} added to shopping list`); break; }
+  case 'secMove': { const o=orderedSections(); const i=o.indexOf(d.id), j=i+(+d.dir); if(i>=0&&j>=0&&j<o.length){ [o[i],o[j]]=[o[j],o[i]]; } S.secOrder=o; break; }
+  case 'addIngredient': {
+   const ingredient=INGREDIENT_CATALOG[Number(d.id)];
+   if(ingredient) addShop(ingredient.name);
+   break;}
+  case 'buy': {const x=S.shop.find(i=>i.id===d.id); if(x){x.bought=!x.bought; pendingChip={id:x.id,bought:x.bought};} break;}
+  case 'removeSheet': removeSheet(); break;
+  case 'removeShop': S.shop=S.shop.filter(x=>x.id!==d.id); removeSheet(); break;
+  case 'removeAll': S.shop=[]; forceClose(); toast('List cleared'); break;
+  case 'doneSheet': doneSheet(); break;
+  case 'confirmDone': confirmDone(); break;
+  case 'openHistory': historySheet(); break;
+  case 'hperiod': S.hperiod=d.id; if(S.histOpen) historySheet(); break;
+  case 'hfilter': S.hfilter=d.id; if(S.histOpen) historySheet(); break;
+  case 'hEdit': histEdit(d.id); break;
+  case 'hStatus': histEditState.status=d.id; histEditRender(); break;
+  case 'hStars': histEditState.stars=+d.id; histEditRender(); break;
+  case 'hSave': hSave(); break;
+  case 'co': checkoff.ans[d.id]=d.val; renderCheckoff(); break;
+  case 'coSave': coSave(); break;
+  case 'dataSheet': dataSheet(); break;
+  case 'showTips': showTips(); break;
+  case 'exportBackup': exportBackup(); markBackup(); break;
+  case 'bkBackup': exportBackup(); markBackup(); break;
+  case 'bkDismiss': { const b=bkState(); b.reminded=true; b.lastRemind=Date.now(); break; }
+  case 'importMerge': S.mergeMode='merge'; $('#importFile').click(); break;
+  case 'importReplace': S.mergeMode='replace'; $('#importFile').click(); break;
+  case 'clearSelected': {
+   const picked=[...document.querySelectorAll('input[name=clr]:checked')].map(i=>i.value);
+   if(!picked.length){toast('Choose at least one item to clear.',true);break;}
+   clearSheet(picked.join(','));
+   break;}
+  case 'doClear': doClear(d.id); break;
+  case 'clearAllSheet': clearAllSheet(); break;
+  case 'doClearAll': doClearAll(); break;
+  case 'closeSheet': closeSheet(); break;
+ }
+ render();
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+ if(e.target.id==='overlay'){closeSheet();return;}
+ const el=e.target.closest('[data-act]');
+ if(!el||el.disabled) return;
+ act(el.dataset.act,el.dataset,el);
+});
+document.addEventListener('input',e=>{
+ const t=e.target;
+ if(t.id==='fName'){const sb=document.querySelector('[data-act="saveItem"]'); if(sb) sb.disabled=!t.value.trim();}
+ if(t.dataset&&t.dataset.rf){rfInput(t);}
+ if(t.dataset&&t.dataset.input==='rq'){S.rq=t.value;render();}
+ if(t.dataset&&t.dataset.input==='gq'){gen.q=t.value;renderGen(); const el=$('#genSearch'); if(el){el.focus(); el.setSelectionRange(el.value.length,el.value.length);} }
+ if(t.dataset&&t.dataset.gen){genInput(t);}
+ if(t.dataset&&t.dataset.input==='q'){S.q=t.value;render();}
+ if(t.id==='shopInput'){S.shopQuery=t.value;render();}
+ if(t.id==='clearWord'){const b=$('#clearGo'); if(b) b.disabled=t.value!=='DELETE';}
+});
+document.addEventListener('change',e=>{
+ const t=e.target;
+ if(t.id==='importFile') importFile(t);
+ });
+document.addEventListener('keydown',e=>{
+ if(e.key==='Enter'&&e.target.id==='shopInput'){e.preventDefault();act('addShop',{},null);}
+ if(e.key==='Enter'&&e.target.id==='pantrySearch'){e.preventDefault();act('newItem',{},null);}
+ if(e.key==='Escape'&&!$('#overlay').hidden&&!S.lockSheet){closeSheet();render();}
+});
+$('#screen').addEventListener('scroll',updateParallax,{passive:true});
+document.addEventListener('focusout',e=>{
+ if(e.target.dataset&&e.target.dataset.rf==='ing'&&e.target.dataset.k==='n'){
+  setTimeout(()=>{const c=document.getElementById('rfSugg-'+e.target.dataset.i); if(c) c.innerHTML='';},180);
+ }
+},true);
+document.addEventListener('change',e=>{ if(e.target.id==='servingsSel'){S.servings=+e.target.value;render();} if(e.target.id==='recipeSort'){S.rsort=e.target.value;render();} if(e.target.id==='genSort'){gen.sort=e.target.value;renderGen();} });
+setInterval(()=>{ if(S.tab==='home' && $('#overlay').hidden) render(); },60000);
+loadBoot();
+</script>
+</body>
+</html>
