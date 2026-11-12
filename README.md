@@ -2,7 +2,7 @@
 
 One Munch Plan is a responsive web application with a mobile-first approach meal planner for home cooks. Track what's in your kitchen, save your recipes, plan the week, build a shopping list from what's missing, and log how each meal went.
 
-Current version: **1.0.0**
+Current version: **1.0.1**
 
 ---
 
