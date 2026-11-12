@@ -11,7 +11,7 @@
 <link rel="icon" href="icons/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="description" content="Plan meals around what's already in your kitchen.">
-<title>One Munch Plan · Meal planning to the max!</title>
+<title>One Munch Plan · Responsive web prototype</title>
 <style>
 @font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
@@ -587,7 +587,7 @@ const allNames=()=>[...new Set(S.recipes.flatMap(r=>r.ing.map(i=>i[0])))];
 const shopFor=key=>S.shop.filter(x=>x.src===key&&!x.bought);
 const ratingDisplay=r=>r.rating?`<span class="stars-inline" aria-label="${r.rating} of 5 stars">${stars(r.rating)}</span>`:'Not rated yet';
 const statusClass=st=>st==='Cooked'?'cooked':st==='Eat out'?'eat':st==='Skipped'?'skipped':'planned';
-const pillFor=st=>`<span class="pill pill--${statusClass(st)}">${esc(st)}</span>`;
+const pillFor=st=>`<span class="pill pill--${statusClass(st)}">${esc(st==='Cooked'?'Made it':st==='Eat out'?'Ate out':st)}</span>`;
 const missingLine=m=>m.length?`<p class="missing"><b>Missing:</b> ${esc(m.join(', '))}</p>`:'';
 function toast(msg,err){const t=$('#toast');t.textContent=msg;t.classList.toggle('toast--err',!!err);t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2500);}
 function openSheet(html,opts={}){
@@ -747,7 +747,7 @@ function backupBanner(){
    <button class="btn btn--block" style="margin-top:14px" data-act="bkBackup">${ic('download')}Back up now</button></div>`;
 }
 const APP_NAME='One Munch Plan';
-const APP_VERSION='1.0.0';
+const APP_VERSION='1.0.1';
 let updateAvailable=null, updateDismissed=false;
 function semverGt(a,b){ const x=String(a).split('.').map(Number), y=String(b).split('.').map(Number);
  for(let i=0;i<3;i++){ const p=x[i]||0, q=y[i]||0; if(p>q) return true; if(p<q) return false; } return false; }
@@ -770,7 +770,7 @@ const TOUR=[
  {title:'Recipes',body:'Add and save your recipes. Each one lists its ingredients and steps.',tab:'recipes',target:'recipes'},
  {title:'Plan',body:'Choose a meal for each day of the week, using the recipes you’ve saved.',tab:'plan',target:'plan'},
  {title:'Shop',body:'Your grocery list fills in with what you’re missing for the plan.',tab:'shop',target:'shop'},
- {title:'Home',body:'Your daily hub for updating meal status, add ratings, and check ingredients that are about to expire. After exploring, head to Settings on this screen to clear the sample data and create your own.',tab:'home',target:'home'}
+ {title:'Home',body:'Your daily hub for updating meal status, add ratings, and check ingredients that are about to expire.',tab:'home',target:'home'}
 ];
 let tourStep=0;
 function tourRoot(){ let r=document.getElementById('tour'); if(!r){ r=document.createElement('div'); r.id='tour'; document.getElementById('app').appendChild(r); } return r; }
@@ -1043,7 +1043,7 @@ function slotCard(d,s,recipeBtn=false){
  return `<div class="slot slot--${statusClass(e.status)}">
    <div class="slot-row">
     <button class="slot-top" data-act="mealSheet" data-day="${d}" data-slot="${s}">
-     ${thumbFor(e.recipeId,e.title,'')}
+     ${e.photo?photoEl(e.photo,e.title,'',e.title):thumbFor(e.recipeId,e.title,'')}
      <div class="card-body">
        <p class="slot-label">${s}</p>
        <h4 style="margin-top:2px">${esc(e.title)}</h4>
@@ -1063,8 +1063,10 @@ function renderMealSheet(){
  const recipeRow=rec(S.plan[ed.d][ed.s].recipeId)?`<button class="btn btn--block" style="background:var(--lavender)" data-act="recipeSheet" data-id="${S.plan[ed.d][ed.s].recipeId}">${ic('book')}View recipe</button>`:'';
  openSheet(`<div class="grip"></div><p class="meta">${DAYS[ed.d]} · ${ed.s}</p><h2 id="sheetTitle">${esc(title)}</h2>
   ${recipeRow}
+  <input type="hidden" id="fPhoto" value="${esc(S.plan[ed.d][ed.s].photo||'')}" data-alt="${esc(title)}">
+  ${photoBlock('meal',S.plan[ed.d][ed.s].photo,title)}
   <p class="lbl meal-status-label">How did it go?</p>
-  <div class="seg" role="group" aria-label="Status">${STATUSES.map(st=>`<button class="${ed.status===st?'on':''}" data-act="mStatus" data-id="${st}" aria-pressed="${ed.status===st}">${st==='Planned'?'Not yet':st}</button>`).join('')}</div>
+  <div class="seg" role="group" aria-label="Status">${STATUSES.map(st=>`<button class="${ed.status===st?'on':''}" data-act="mStatus" data-id="${st}" aria-pressed="${ed.status===st}">${({Planned:'Not yet',Cooked:'Made it',Skipped:'Skipped','Eat out':'Ate out'})[st]}</button>`).join('')}</div>
   ${showStars?`<p class="lbl meal-status-label">Worth eating again?</p>
    <div class="stars" role="group" aria-label="Rating">${[1,2,3,4,5].map(n=>`<button class="${n<=ed.stars?'on':''}" aria-label="${n} stars" data-act="mStars" data-id="${n}">${ic('star')}</button>`).join('')}</div>
    <p class="rating-text">${ed.stars?ed.stars+' of 5':'Tap a star to rate'}</p>`:''}
@@ -1075,6 +1077,8 @@ function mSave(){
  const {d,s}=editing, e=S.plan[d][s], prev=e.status;
  e.status=editing.status;
  e.stars=(e.status==='Cooked'||e.status==='Eat out')?editing.stars:0;
+ if(e.stars){const r=rec(e.recipeId); if(r) r.rating=e.stars;}
+  const ph=$('#fPhoto'); if(ph){ const v=ph.value||null; if(e.photo&&e.photo!==v) photoDel(e.photo); e.photo=v; }
   if(e.status!=='Planned') upsertHistory(d,s,e);
  const key=`${d}-${s}`;
  forceClose();
@@ -1123,44 +1127,64 @@ function coSave(){
  forceClose();
  toast('Storage updated');
 }
-function openGen(d,s,keepFresh=false){ gen={d,s,effort:S.genEffort,pick:null,keepFresh,mode:'cook',view:'list',dish:'',location:''}; renderGen(); }
+function openGen(d,s,keepFresh=false){ gen={d,s,effort:S.genEffort,pick:null,keepFresh,mode:'cook',view:'list',useRecipe:true,dish:'',location:''}; renderGen(); }
+function genReady(){
+ if(gen.mode==='cook') return gen.useRecipe===false ? !!gen.dish.trim() : !!gen.pick;
+ return !!(gen.dish.trim()&&gen.location.trim());
+}
 function renderGen(){
  const used=gen.keepFresh?new Set(S.plan.flatMap(day=>Object.values(day)).filter(Boolean).map(e=>e.recipeId).filter(Boolean)):new Set();
  const candidates=S.recipes.filter(r=>r.effort===gen.effort&&!used.has(r.id))
    .map(r=>({r,m:missingOf(r)}))
    .filter(({r})=>r.name.toLowerCase().includes((gen.q||'').trim().toLowerCase())).sort(cmpRecipe(gen.sort||'az'));
  const cands=gen.keepFresh?candidates.slice(0,3):candidates;
- const ready=gen.mode==='cook'?!!gen.pick:!!(gen.dish.trim()&&gen.location.trim());
+ const eatIn=gen.mode==='cook';
+ const useRec=eatIn&&gen.useRecipe!==false;
+ const ready=genReady();
  const mealOptions=cands.map(({r,m})=>`<button class="card card--tap ${gen.pick===r.id?'card--sel':''}" data-act="gPick" data-id="${r.id}" aria-pressed="${gen.pick===r.id}" style="display:flex;align-items:center;gap:12px;padding:8px 12px;text-align:left;width:100%;margin-bottom:12px">
     ${photoEl(r.photo,r.name,'',r.id)}
     <div class="card-body"><h4 style="margin:0">${esc(r.name)}</h4>
     <div class="meta">${esc(r.effort)} · ${ratingDisplay(r)}</div>${missingLine(m)}</div></button>`).join('');
- openSheet(`<div class="grip"></div><p class="meta">${DAYS[gen.d]} · ${gen.s}</p><h2 id="sheetTitle">What are your plans?</h2>
-  <div class="seg" role="group" aria-label="Meal plan type">
-   <button class="${gen.mode==='cook'?'on':''}" data-act="gMode" data-id="cook" aria-pressed="${gen.mode==='cook'}">Cook</button>
-   <button class="${gen.mode==='eatOut'?'on':''}" data-act="gMode" data-id="eatOut" aria-pressed="${gen.mode==='eatOut'}">Eat out</button>
-  </div>
-  ${gen.mode==='cook'?`<h3>Choose your cooking effort</h3>
+ const recipeQuestion=`<h3>Would you like to use a recipe?</h3>
+   <div class="seg" role="group" aria-label="Use a recipe">
+    <button class="${useRec?'on':''}" data-act="gRecipe" data-id="yes" aria-pressed="${useRec}">Yes</button>
+    <button class="${useRec?'':'on'}" data-act="gRecipe" data-id="no" aria-pressed="${!useRec}">No</button>
+   </div>`;
+ const recipeSection=`<h3>Choose your cooking effort</h3>
    <div class="seg" role="group" aria-label="Effort">${EFFORTS.map(e=>`<button class="${gen.effort===e?'on':''}" data-act="gEffort" data-id="${e}" aria-pressed="${gen.effort===e}">${e}</button>`).join('')}</div>
    <h2 style="margin:12px 0 12px;font:700 20px/26px var(--display)">Choose your meal</h2>
    ${recipeSearchRow(gen.q,gen.sort||'az','gq','genSearch','genSort')}
-   ${cands.length?mealOptions
-    :`<div class="empty"><div class="blob">${ic('sparkle')}</div><p>${gen.keepFresh?`No ${esc(gen.effort.toLowerCase())} recipes left to suggest. Try another level.`:`No ${esc(gen.effort.toLowerCase())} recipes available.`}</p></div>`}`
-   :`<label class="lbl" for="genDish">Dish name</label>
-    <input id="genDish" type="text" data-gen="dish" value="${esc(gen.dish)}" placeholder="For example, Chicken Alfredo" autocomplete="off">
+   ${cands.length?mealOptions:`<div class="empty"><div class="blob">${ic('sparkle')}</div><p>${gen.keepFresh?`No ${esc(gen.effort.toLowerCase())} recipes left to suggest. Try another level.`:`No ${esc(gen.effort.toLowerCase())} recipes available.`}</p></div>`}`;
+ const dishField=`<label class="lbl" for="genDish">Dish name</label>
+   <input id="genDish" type="text" data-gen="dish" value="${esc(gen.dish)}" placeholder="For example, Chicken Alfredo" autocomplete="off">`;
+ const body=eatIn
+   ? `${recipeQuestion}${useRec?recipeSection:dishField}`
+   : `${dishField}
     <label class="lbl" for="genLocation">Location name</label>
-    <input id="genLocation" type="text" data-gen="location" value="${esc(gen.location)}" placeholder="For example, Helene's Garden" autocomplete="off">`}
-  <div class="stack">${gen.mode==='cook'?'':`<button class="btn btn--primary btn--block" id="planMealButton" data-act="gPlan" ${ready?'':'disabled'}>Plan the meal</button>`}
+    <input id="genLocation" type="text" data-gen="location" value="${esc(gen.location)}" placeholder="For example, Helene's Garden" autocomplete="off">`;
+ const showPlan=!useRec;
+ openSheet(`<div class="grip"></div><p class="meta">${DAYS[gen.d]} · ${gen.s}</p><h2 id="sheetTitle">What are your plans?</h2>
+  <div class="seg" role="group" aria-label="Meal plan type">
+   <button class="${gen.mode==='cook'?'on':''}" data-act="gMode" data-id="cook" aria-pressed="${gen.mode==='cook'}">Eat in</button>
+   <button class="${gen.mode==='eatOut'?'on':''}" data-act="gMode" data-id="eatOut" aria-pressed="${gen.mode==='eatOut'}">Eat out</button>
+  </div>
+  ${body}
+  <div class="stack">${showPlan?`<button class="btn btn--primary btn--block" id="planMealButton" data-act="gPlan" ${ready?'':'disabled'}>Plan the meal</button>`:''}
   <button class="btn btn--block" data-act="closeSheet">Cancel</button></div>`);
 }
 function genInput(t){
  if(!gen) return;
  gen[t.dataset.gen]=t.value;
- const ready=gen.mode==='cook'?!!gen.pick:!!(gen.dish.trim()&&gen.location.trim());
+ const ready=genReady();
  const button=$('#planMealButton');
  if(button) button.disabled=!ready;
 }
 function planGenMeal(){
+ if(gen.mode==='cook' && gen.useRecipe===false){
+  const title=gen.dish.trim(); if(!title) return;
+  S.plan[gen.d][gen.s]={title,recipeId:null,status:'Planned',stars:0,leftovers:false,locked:false};
+  bkState().meals++; forceClose(); toast(`${title} added to the plan`); return;
+ }
  if(gen.mode==='cook'){
   const r=rec(gen.pick);
   if(!r) return;
@@ -1431,7 +1455,7 @@ function loadBoot(){
   .then(()=>{stateLoaded=true;})
   .then(()=>loadPhotos().catch(()=>{}))
   .then(()=>{
-   const refs=new Set([...S.recipes.map(r=>r.photo),...S.pantry.map(p=>p.photo)].filter(Boolean));
+   const refs=new Set([...S.recipes.map(r=>r.photo),...S.pantry.map(p=>p.photo),...S.plan.flatMap(d=>Object.values(d)).filter(Boolean).map(e=>e.photo)].filter(Boolean));
    Object.keys(PHOTO_URL).forEach(id=>{ if(!refs.has(id)) photoDel(id); });
   })
   .then(()=>render())
@@ -1480,7 +1504,7 @@ function blobToDataURL(blob){
  return new Promise((res,rej)=>{const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(blob);});
 }
 async function photosForBackup(){
- const ids=[...S.recipes.map(r=>r.photo),...S.pantry.map(p=>p.photo)].filter(Boolean);
+ const ids=[...S.recipes.map(r=>r.photo),...S.pantry.map(p=>p.photo),...S.plan.flatMap(d=>Object.values(d)).filter(Boolean).map(e=>e.photo)].filter(Boolean);
  const out={};
  for(const id of ids){ const b=await photoGetBlob(id); if(b) out[id]=await blobToDataURL(b); }
  return out;
@@ -1519,18 +1543,18 @@ async function handlePhoto(kind,file){
   await photoPut(id,blob);
   PHOTO_URL[id]=URL.createObjectURL(blob);
   if(kind==='recipe'){ if(S.rform){ S.rform.photo=id; render(); } }
-  else { const h=$('#fPhoto'); if(h){ h.value=id; $('#photoBlock-item').outerHTML=photoBlock('item',id,$('#fName').value||'item'); } }
+  else { const h=$('#fPhoto'); if(h){ h.value=id; const alt=kind==='item'?($('#fName').value||'item'):(h.dataset.alt||'meal'); $('#photoBlock-'+kind).outerHTML=photoBlock(kind,id,alt); } }
  }catch(e){ toast('That photo could not be processed.',true); }
 }
 function removePhoto(kind){
  if(kind==='recipe'){ if(S.rform){ S.rform.photo=null; render(); } }
- else { const h=$('#fPhoto'); if(h){ h.value=''; $('#photoBlock-item').outerHTML=photoBlock('item','',$('#fName').value||'item'); } }
+ else { const h=$('#fPhoto'); if(h){ h.value=''; const alt=kind==='item'?($('#fName').value||'item'):(h.dataset.alt||'meal'); $('#photoBlock-'+kind).outerHTML=photoBlock(kind,'',alt); } }
 }
 function photoBlock(kind,pid,alt){
  const tile=pid&&PHOTO_URL[pid]?`<img src="${PHOTO_URL[pid]}" alt="${esc(alt)}" style="width:100%;height:100%;object-fit:cover;display:block">`:`<div style="display:grid;justify-items:center;gap:6px;font:700 14px var(--sans);color:var(--ink)">${ic('photo')}<span>Add a photo</span></div>`;
  return `<div id="photoBlock-${kind}" style="margin-bottom:12px"><p class="lbl">Photo</p>
-  <div class="photo-tile ${kind}-tile" style="aspect-ratio:${kind==='item'?'1/1':'4/3'};border:var(--border);border-radius:var(--radius);overflow:hidden;background:var(--lavender);display:grid;place-items:center">${tile}</div>
-  <div class="stack ${kind}-tile" style="margin-top:8px"><button class="btn btn--block" data-act="pickPhoto" data-id="${kind}">${pid?'Replace photo':'Choose photo'}</button>${pid?`<button class="btn btn--block" data-act="removePhoto" data-id="${kind}">Remove photo</button>`:''}</div></div>`;
+  <div class="photo-tile ${kind==='recipe'?'recipe-tile':'item-tile'}" style="aspect-ratio:${kind==='recipe'?'4/3':'1/1'};border:var(--border);border-radius:var(--radius);overflow:hidden;background:var(--lavender);display:grid;place-items:center">${tile}</div>
+  <div class="stack ${kind==='recipe'?'recipe-tile':'item-tile'}" style="margin-top:8px"><button class="btn btn--block" data-act="pickPhoto" data-id="${kind}">${pid?'Replace photo':'Choose photo'}</button>${pid?`<button class="btn btn--block" data-act="removePhoto" data-id="${kind}">Remove photo</button>`:''}</div></div>`;
 }
 function noImage(c){
  return `<div class="img ${c}" role="img" aria-label="No image found" style="background:var(--white);display:grid;place-items:center;text-align:center;padding:4px"><span style="font:700 12px/1.2 var(--sans);color:var(--ink)">No image found</span></div>`;
@@ -1682,9 +1706,10 @@ function act(a,d,el){
   case 'mealSheet': mealSheet(+d.day,d.slot); break;
   case 'mStatus': editing.status=d.id; renderMealSheet(); break;
   case 'mStars': editing.stars=+d.id; renderMealSheet(); break;
-  case 'mRemove': S.plan[editing.d][editing.s]=null; forceClose(); toast('Meal removed'); break;
+  case 'mRemove': photoDel((S.plan[editing.d][editing.s]||{}).photo); S.plan[editing.d][editing.s]=null; forceClose(); toast('Meal removed'); break;
   case 'mSave': mSave(); break;
   case 'gMode': gen.mode=d.id; renderGen(); break;
+  case 'gRecipe': gen.useRecipe=(d.id==='yes'); if(!gen.useRecipe) gen.pick=null; renderGen(); break;
   case 'gEffort': gen.effort=d.id; S.genEffort=d.id; gen.pick=null; renderGen(); break;
   case 'gView': gen.view=d.id; renderGen(); break;
   case 'gPick': gen.pick=d.id; if(gen.mode==='cook'){ planGenMeal(); } else { renderGen(); } break;
